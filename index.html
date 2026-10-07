@@ -77,7 +77,7 @@
 
   <div id="value">
     <h3>1.2 Project Value</h3>
-    <p>The intended contribution is not only a radar installation, but a configurable sensing architecture that can be adapted to vessels of different geometries and sensor counts. The project combines sensor technology evaluation, configurable multi-sensor integration, point-cloud processing, proximity alarming, visualisation, and maritime validation against LiDAR/camera reference data.</p>
+    <p>The intended contribution is not only a radar installation, but a configurable and continuous sensing architecture that can be adapted to vessels of different geometries and sensor counts. The project combines sensor technology evaluation, configurable multi-sensor integration, point-cloud processing, proximity alarming, visualisation, and maritime validation against LiDAR/camera reference data.</p>
   </div>
 
   <sl-divider></sl-divider>
@@ -122,7 +122,7 @@
 
   <div id="selected-radar">
     <h3>3.1 Selected Radar: CTLRR-540 4D Imaging Radar</h3>
-    <p>The currently sourced sensor is the CTLRR-540, a 76–79 GHz FMCW 4D imaging radar. Vendor specifications state a 0.2–360 m range, up to 2048 point-cloud returns per frame, 50 ms data period, ±60° azimuth field of view, ±15° elevation field of view, 12 V operation, ≤10 W power consumption, Ethernet/CAN interfaces, and IP6K7/IP6K9K environmental protection.</p>
+    <p>The currently sourced sensor is the CTLRR-540, a 76–79 GHz FMCW 4D imaging radar. Vendor specifications state a 0.2–360 m range, up to 2048 point-cloud returns per frame, 50 ms data period, ±60° azimuth field of view, ±15° elevation field of view, 12 V operation, ≤10 W power consumption, Ethernet/CAN interfaces, and IP6K7/ environmental protection.</p>
     <p>For this project, the Ethernet output is required because the vendor has indicated that the full 4D point-cloud output, including elevation/Z information, is available through automotive Ethernet whereas the CAN output does not provide the required Z information. Integration therefore uses an automotive-Ethernet-to-standard-Ethernet media converter before connection to the onboard computer network.</p>
   </div>
 
@@ -233,33 +233,13 @@ Regulated 12 V Rail      SBC DC-DC Rail
     <p>Two-radar testing will then evaluate coordinate-frame fusion, overlap handling, placement trade-offs and any practical effects of simultaneous radar operation. The final system will be benchmarked against the LiDAR reference with particular emphasis on false alarms caused by maritime clutter.</p>
   </div>
 
-  <sl-divider></sl-divider>
-
-  <div id="timeline">
-    <h2>7. Project Timeline & Progress</h2>
-    <ul>
-      <li><strong>May – Aug 2026:</strong> Problem definition, literature review, candidate technology identification, system requirements and evaluation metrics.</li>
-      <li><strong>Aug – early Oct 2026:</strong> Sensor trade study, sourcing and selection. CTLRR-540 identified; procurement initiated subject to vendor/shipping lead time.</li>
-      <li><strong>Oct – Nov 2026:</strong> Bring forward hardware-independent development: ROS 2/simulation environment, common point-cloud interface, detection pipeline, coordinate transforms, configurable multi-sensor architecture, communications/power design and 3D visualisation.</li>
-      <li><strong>Late Nov – Dec 2026 (subject to delivery):</strong> CTLRR-540 driver/interface integration and controlled single-sensor characterisation.</li>
-      <li><strong>Dec 2026 – Feb 2027:</strong> BlueBoat integration, two-radar prototype, coverage/placement evaluation and algorithm refinement.</li>
-      <li><strong>Feb – mid Mar 2027:</strong> Maritime validation and benchmarking against LiDAR/camera reference data.</li>
-      <li><strong>Mid Mar – early Apr 2027:</strong> Final analysis, deployment recommendations, dissertation/report and final presentation.</li>
-    </ul>
-  </div>
-
-  <div id="deliverables">
-    <h2>8. Intended Deliverables</h2>
-    <p>A working prototype comprising radar hardware and a configurable multi-sensor software stack for short-range proximity detection on maritime vehicles, supported by sensor-selection evidence, sensor characterisation, system-level simulation, maritime validation, benchmarking against LiDAR/camera reference data, and practical deployment/placement guidelines for scalable safety sensing.</p>
-  </div>
-
   <div id="references" class="references">
     <sl-divider></sl-divider>
     <h2>References</h2>
     <ul>
-      <li>[To be populated] Peer-reviewed literature on maritime perception, mmWave/FMCW radar, radar clutter mitigation, multi-radar fusion and autonomous-vehicle radar processing.</li>
-      <li>[To be populated] CTLRR-540 vendor datasheet / technical documentation.</li>
-      <li>[To be populated] ST Engineering operational requirements and project context, where permitted for academic documentation.</li>
+      <li>1</li>
+      <li>2</li>
+      <li>3</li>
     </ul>
   </div>
 </div>
