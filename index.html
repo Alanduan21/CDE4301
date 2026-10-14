@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Configurable mmWave Safety Sensor System</title>
-  <link rel="icon" href="/CDE4301/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="./favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.16.0/cdn/themes/light.css" />
   <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.16.0/cdn/shoelace-autoloader.js"></script>
   <link rel="stylesheet" href="./index.css">
@@ -26,7 +26,7 @@
 
   <!-- Replace the placeholder details below with your actual name, department, year and avatar. -->
   <div class="team-member-wrapper">
-    <team-member avatar="assets/profile.jpg" name="Duan Yihe" department="Electrical & Computer Engineering" year="AY26/27"></team-member>
+    <team-member avatar="assets/profile.png" name="[Student Name]" department="[Department]" year="[Year]"></team-member>
   </div>
 
   <sl-divider></sl-divider>
@@ -53,8 +53,9 @@
         <sl-tree-item><a href="#ui">4.5 Visualisation</a></sl-tree-item>
       </sl-tree-item>
       <sl-tree-item expanded><a href="#interim">5. Interim Development & Validation</a>
-        <sl-tree-item><a href="#simulation">5.1 Simulation Strategy</a></sl-tree-item>
-        <sl-tree-item><a href="#hypotheses">5.2 Hypotheses</a></sl-tree-item>
+        <sl-tree-item><a href="#interim">5.1 Water-Spray Characterization</a></sl-tree-item>
+        <sl-tree-item><a href="#simulation">5.3 Supporting Software Development</a></sl-tree-item>
+        <sl-tree-item><a href="#hypotheses">5.4 Hypotheses</a></sl-tree-item>
       </sl-tree-item>
       <sl-tree-item expanded><a href="#validation">6. Experimental Validation Plan</a></sl-tree-item>
       <sl-tree-item expanded><a href="#timeline">7. Project Timeline & Progress</a></sl-tree-item>
@@ -67,7 +68,8 @@
 
   <div id="problem">
     <h2>1. Problem, Motivation & Context</h2>
-    <p>Existing maritime navigation sensors do not necessarily provide a reliable, low-cost near-field safety envelope around a vessel under conditions such as darkness, rain, spray and wave clutter. This project investigates whether compact automotive mmWave radar can provide that function, and develops a configurable multi-sensor prototype for short-range obstacle detection and warning.</p>
+    <p>Maritime vehicles rely on multiple sensors for navigation and situational awareness, yet a dedicated short-range proximity safety layer is required to reliably detect obstacles in the vessel's immediate surroundings and support collision avoidance. This project investigates a configurable millimetre-wave (mmWave) sensing system for this role.</p>
+  </div>
 
   <div id="gap">
     <h3>1.1 Problem Gap</h3>
@@ -76,7 +78,7 @@
 
   <div id="value">
     <h3>1.2 Project Value</h3>
-    <p>The intended contribution is not only a radar installation, but a configurable and continuous sensing architecture that can be adapted to vessels of different geometries and sensor counts. The project combines sensor technology evaluation, configurable multi-sensor integration, point-cloud processing, proximity alarming, visualisation, and maritime validation against LiDAR/camera reference data.</p>
+    <p>The intended contribution is not only a radar installation, but a configurable sensing architecture that can be adapted to vessels of different geometries and sensor counts. The project combines sensor technology evaluation, configurable multi-sensor integration, point-cloud processing, proximity alarming, visualisation, and maritime validation against LiDAR/camera reference data.</p>
   </div>
 
   <sl-divider></sl-divider>
@@ -121,7 +123,7 @@
 
   <div id="selected-radar">
     <h3>3.1 Selected Radar: CTLRR-540 4D Imaging Radar</h3>
-    <p>The currently sourced sensor is the CTLRR-540, a 76–79 GHz FMCW 4D imaging radar. Vendor specifications state a 0.2–360 m range, up to 2048 point-cloud returns per frame, 50 ms data period, ±60° azimuth field of view, ±15° elevation field of view, 12 V operation, ≤10 W power consumption, Ethernet/CAN interfaces, and IP6K7/ environmental protection.</p>
+    <p>The currently sourced sensor is the CTLRR-540, a 76–79 GHz FMCW 4D imaging radar. Vendor specifications state a 0.2–360 m range, up to 2048 point-cloud returns per frame, 50 ms data period, ±60° azimuth field of view, ±15° elevation field of view, 12 V operation, ≤10 W power consumption, Ethernet/CAN interfaces, and IP6K7/IP6K9K environmental protection.</p>
     <p>For this project, the Ethernet output is required because the vendor has indicated that the full 4D point-cloud output, including elevation/Z information, is available through automotive Ethernet whereas the CAN output does not provide the required Z information. Integration therefore uses an automotive-Ethernet-to-standard-Ethernet media converter before connection to the onboard computer network.</p>
   </div>
 
@@ -204,18 +206,34 @@ Regulated 12 V Rail      SBC DC-DC Rail
   <sl-divider></sl-divider>
 
   <div id="interim">
-    <h2>5. Interim Development & Validation</h2>
-    <p>Procurement lead time for the selected radar prevents the original September single-sensor characterisation milestone from being completed as planned. To avoid blocking system development, hardware-dependent and hardware-independent work have been decoupled. The communications/software architecture, detection pipeline, multi-sensor transforms, visualisation and system-level validation can therefore proceed using simulation while the radar is in transit.</p>
+    <h2>5. Interim Development &amp; Validation</h2>
+    <p>The Semester 1 interim work prioritises a controlled LiDAR baseline characterization of temporary target-visibility loss under water spray. This establishes a repeatable, instrument-specific benchmark for later comparison with the CTLRR-540. The radar's procurement lead time means physical radar results are not assumed for the interim assessment. Experimental findings will be reported only after data collection and analysis.</p>
+
+    <h3>5.1 Controlled LiDAR Water-Spray Characterization</h3>
+    <p><strong>Research question:</strong> How does a repeatable water-spray disturbance crossing the LiDAR-to-target optical path affect fresh target measurements, the duration of detection loss and recovery after spray cessation?</p>
+    <p><strong>Apparatus:</strong> Livox Mid-360 LiDAR on a fixed mount; Insta360 X4 camera for scene documentation and spray-event annotation; a stationary, measured solid target approximately 3–5 m from the LiDAR; a controlled shower or nozzle directed into a collection vessel; and a computer recording timestamped point-cloud data. The target distance, sensor height, spray position, target dimensions and acquisition settings will be documented. Wet testing requires a suitable location, safe power isolation and water containment.</p>
+    <p><strong>Protocol:</strong> Each target-present trial comprises approximately 10 s of unobstructed baseline, 10 s with spray crossing the line of sight, and 20 s after spray stops. The intended pilot uses 5–10 repeated trials per condition where feasible. Separate target-absent control recordings will distinguish spray/background returns from true target returns. Spray start and stop will be annotated using synchronized video or a recorded timing cue.</p>
+    <p><strong>Spray characterization:</strong> Collected water volume <em>V</em>, horizontal collection area <em>A</em> and collection time <em>t</em> give an equivalent precipitation rate <em>I = V/(A t)</em>, reported in mm/h after unit conversion. This is a repeatability descriptor; it does not imply that a shower reproduces natural rainfall droplet distributions or vessel-generated sea spray.</p>
+    <p><strong>Offline processing:</strong> Record the complete timestamped LiDAR point-cloud stream first, then replay it for analysis. A fixed three-dimensional target region of interest (ROI) is defined from the measured target location and dry baseline. A separate spray ROI describes the disturbed optical path; bucket walls, floor and other fixed background geometry are excluded. Points are grouped into fixed-duration observation windows. The same predeclared target-return rule is applied to dry, spray and recovery windows, without relying on tracker-predicted positions.</p>
+
+    <h3>5.2 Quantitative Baseline Metrics</h3>
+    <ul>
+      <li><strong>Target measurement availability:</strong> <em>A = N<sub>visible</sub> / N<sub>eligible</sub> &times; 100%</em>, where a visible window satisfies a fixed target-associated return criterion. Report dry and spray intervals separately; this is not automatically object-detector accuracy.</li>
+      <li><strong>Continuous measurement-loss duration:</strong> <em>T<sub>loss,i</sub> = t<sub>end,i</sub> &minus; t<sub>start,i</sub></em> for each consecutive run of unavailable target measurements. Report maximum duration, distribution and event count.</li>
+      <li><strong>Post-spray recovery time:</strong> <em>T<sub>recovery</sub> = t<sub>stable reacquisition</sub> &minus; t<sub>spray off</sub></em>. Stable reacquisition requires a fixed number of consecutive visible windows; report zero if visibility never ceased, and censor trials without reacquisition during observation.</li>
+      <li><strong>Target-region point retention:</strong> <em>P<sub>retention</sub> = mean(N<sub>ROI,spray</sub>) / mean(N<sub>ROI,dry</sub>) &times; 100%</em>. Because spray returns may enter the target ROI, this is a proxy for visibility, not a guaranteed count of genuine target reflections.</li>
+    </ul>
+    <p><strong>Secondary measurements:</strong> point counts in the empty-space spray ROI, target range error when valid target returns are available, and false obstacle-warning events if a separately specified and fixed detection algorithm is evaluated. Measurement loss, object detection failure and tracker prediction will be reported as distinct phenomena.</p>
+    <p><strong>Interpretation and limitations:</strong> This laboratory study isolates an optical-path disturbance rather than reproducing full maritime sea states, vessel motion or window wetting. It characterizes the particular LiDAR configuration used and does not establish that all LiDAR technologies fail. Subsequent radar testing will repeat equivalent controlled scenarios and use independent target ground truth.</p>
   </div>
 
   <div id="simulation">
-    <h3>5.1 Simulation Strategy</h3>
-    <p>A simulation/test harness will generate or replay radar-like point clouds through the same software interface that will later accept physical CTLRR-540 data. Scenarios will include persistent obstacles, transient clutter, multiple objects, overlapping sensor fields of view, configurable sensor poses and obstacles crossing the safety boundary.</p>
-    <p>The preferred implementation direction is ROS 2 for sensor interfaces, transforms, multi-sensor messaging and visualisation, with Python/C++ processing and optional MATLAB analysis for parameter studies. The simulation is intended to verify system logic and investigate parameter trade-offs; it is not intended to claim high-fidelity electromagnetic modelling of maritime radar returns.</p>
+    <h3>5.3 Supporting Software Development</h3>
+    <p>In parallel, the planned Linux/ROS 2 architecture will accept replayed or synthetic point-cloud data through a common interface. This supports early development of detection, object-level output and visualization without treating synthetic data as experimental evidence of radar performance. The CTLRR-540 Ethernet protocol defines detection-point and vendor-track streams; their physical integration and measured performance remain subjects of Semester 2 validation.</p>
   </div>
 
   <div id="hypotheses">
-    <h3>5.2 Hypotheses for Experimental Evaluation</h3>
+    <h3>5.4 Hypotheses for Experimental Evaluation</h3>
     <ul>
       <li><strong>H1:</strong> Temporal persistence filtering reduces false alarms from transient clutter, with a corresponding increase in detection latency as <em>K</em> increases.</li>
       <li><strong>H2:</strong> Incorporating radial velocity into the processing pipeline can improve discrimination between genuine obstacles and maritime clutter compared with spatial information alone.</li>
@@ -232,13 +250,15 @@ Regulated 12 V Rail      SBC DC-DC Rail
     <p>Two-radar testing will then evaluate coordinate-frame fusion, overlap handling, placement trade-offs and any practical effects of simultaneous radar operation. The final system will be benchmarked against the LiDAR reference with particular emphasis on false alarms caused by maritime clutter.</p>
   </div>
 
+
+
   <div id="references" class="references">
     <sl-divider></sl-divider>
     <h2>References</h2>
     <ul>
-      <li>1</li>
-      <li>2</li>
-      <li>3</li>
+      <li>[To be populated] Peer-reviewed literature on maritime perception, mmWave/FMCW radar, radar clutter mitigation, multi-radar fusion and autonomous-vehicle radar processing.</li>
+      <li>[To be populated] CTLRR-540 vendor datasheet / technical documentation.</li>
+      <li>[To be populated] ST Engineering operational requirements and project context, where permitted for academic documentation.</li>
     </ul>
   </div>
 </div>
