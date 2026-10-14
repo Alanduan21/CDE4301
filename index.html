@@ -19,6 +19,15 @@
   <script src="./components/scroll-to-top/scroll-to-top.js"></script>
   <script src="./components/table-component/table-component.js"></script>
   <link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+  <style>
+    .architecture-figure { margin: 1.25rem 0 1.5rem; padding: 1rem; border: 1px solid #d7e0e8; border-radius: 12px; background: #fbfcfe; overflow-x: auto; }
+    .architecture-figure figcaption { margin-top: .75rem; color: #526579; font-size: .9rem; line-height: 1.45; }
+    .architecture-figure svg { min-width: 620px; }
+    .architecture-figure text { font-family: Arial, Helvetica, sans-serif; }
+    #comms p, #power p, #methodology p, #detection p, #multisensor p { line-height: 1.65; }
+    #comms code, #detection code { background: #eef2f6; padding: .1rem .3rem; border-radius: 4px; }
+  </style>
+
 </head>
 <body>
 <div class="content">
@@ -26,7 +35,7 @@
 
   <!-- Replace the placeholder details below with your actual name, department, year and avatar. -->
   <div class="team-member-wrapper">
-    <team-member avatar="assets/profile.png" name="[Student Name]" department="[Department]" year="[Year]"></team-member>
+    <team-member avatar="assets/profile.png" name="Duan Yihe" department="Electrical & Computer Engineering" year="AY26/27"></team-member>
   </div>
 
   <sl-divider></sl-divider>
@@ -128,72 +137,91 @@
   <sl-divider></sl-divider>
 
   <div id="methodology">
-    <h2>4. System Concept & Methodology</h2>
-    <p>The system is designed around a hardware-independent point-cloud processing pipeline. Both simulated/replayed data and future physical radar data are converted into a common data representation so that the same downstream algorithms can be developed and tested before hardware delivery.</p>
+    <h2>4. System Concept &amp; Methodology</h2>
+    <p>The system separates the sensor transport layer, radar-message decoding, point-cloud processing and vessel-level safety logic. This modular design allows recorded or synthetic data to support software development before the physical radar is integrated. Simulated data will test software behaviour and configuration logic; it will not be treated as evidence of real radar detection performance.</p>
   </div>
 
   <div id="detection">
-    <h3>4.1 Detection Pipeline</h3>
-    <p>The proposed pipeline clusters incoming radar returns using DBSCAN with spatial position (<em>x,y,z</em>) and radial velocity (<em>v</em>) as candidate clustering dimensions. A spatial bounding volume is extracted for each cluster. Clusters below a configurable minimum threat-size criterion <em>S</em> can be rejected, while temporal persistence across at least <em>K</em> consecutive frames is used to distinguish persistent objects from transient detections. A confirmed object entering the configurable standoff region <em>R</em> triggers a proximity alarm.</p>
-    <p>The effectiveness of size filtering, velocity information and temporal persistence for real maritime clutter is treated as an experimental question and will be validated during physical testing rather than assumed.</p>
+    <h3>4.1 Detection and Object Characterization Pipeline</h3>
+    <p>The CTLRR-540 vendor protocol defines two relevant outputs: <code>0x11 RAW_TARGET_DATA</code>, representing post-DSP detection points before vendor tracking, and <code>0x21 TRACK_TARGET_DATA</code>, representing vendor-tracked objects. The project intends to decode both streams if they are enabled in the supplied firmware. These are processed radar outputs, not raw ADC/IQ samples. Actual message availability and decoded field meanings will be verified against live packets.</p>
+    <figure class="architecture-figure">
+      <svg viewBox="0 0 760 410" role="img" aria-labelledby="pipelineTitle pipelineDesc" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block">
+        <title id="pipelineTitle">Radar data processing pipeline</title><desc id="pipelineDesc">The received UDP data is decoded into detection points and vendor tracks. Detection points feed custom clustering and tracking; both outputs can be compared before safety assessment and visualization.</desc>
+        <defs><marker id="arrowPipe" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#526579"/></marker></defs>
+        <rect x="245" y="12" width="270" height="45" rx="8" fill="#eaf0f7" stroke="#8da1b8"/><text x="380" y="31" text-anchor="middle" font-size="14" font-weight="700" fill="#203247">UDP Receiver + Frame Decoder</text><text x="380" y="47" text-anchor="middle" font-size="11" fill="#40566d">Linux user-space application</text>
+        <path d="M380 57 V82 H190 V101 M380 82 H570 V101" fill="none" stroke="#526579" stroke-width="1.6" marker-end="url(#arrowPipe)"/>
+        <rect x="35" y="102" width="310" height="55" rx="8" fill="#e4f5ef" stroke="#72ad9b"/><text x="190" y="123" text-anchor="middle" font-size="14" font-weight="700" fill="#174e42">0x11 Detection Points</text><text x="190" y="141" text-anchor="middle" font-size="11" fill="#285e52">Range, azimuth, elevation, Doppler, quality fields</text>
+        <rect x="415" y="102" width="310" height="55" rx="8" fill="#fff2df" stroke="#d6a45f"/><text x="570" y="123" text-anchor="middle" font-size="14" font-weight="700" fill="#754710">0x21 Vendor Tracks</text><text x="570" y="141" text-anchor="middle" font-size="11" fill="#754710">Track ID, position, velocity, extent and status fields</text>
+        <path d="M190 157 V181" stroke="#526579" stroke-width="1.6" marker-end="url(#arrowPipe)"/><path d="M570 157 V181" stroke="#526579" stroke-width="1.6" marker-end="url(#arrowPipe)"/>
+        <rect x="35" y="183" width="310" height="66" rx="8" fill="#e4f5ef" stroke="#72ad9b"/><text x="190" y="204" text-anchor="middle" font-size="13" font-weight="700" fill="#174e42">Custom Point Processing</text><text x="190" y="222" text-anchor="middle" font-size="11" fill="#285e52">XYZ conversion → DBSCAN → object candidates</text><text x="190" y="237" text-anchor="middle" font-size="11" fill="#285e52">Doppler / temporal filtering ablations</text>
+        <rect x="415" y="183" width="310" height="66" rx="8" fill="#fff2df" stroke="#d6a45f"/><text x="570" y="204" text-anchor="middle" font-size="13" font-weight="700" fill="#754710">Vendor Output Baseline</text><text x="570" y="222" text-anchor="middle" font-size="11" fill="#754710">Use tracks as provided by radar</text><text x="570" y="237" text-anchor="middle" font-size="11" fill="#754710">Validate field interpretation and quality</text>
+        <path d="M190 249 V273 H380 V292 M570 249 V273 H380" fill="none" stroke="#526579" stroke-width="1.6" marker-end="url(#arrowPipe)"/>
+        <rect x="200" y="294" width="360" height="48" rx="8" fill="#eaf0f7" stroke="#8da1b8"/><text x="380" y="314" text-anchor="middle" font-size="13" font-weight="700" fill="#203247">Object-Level Safety Assessment</text><text x="380" y="331" text-anchor="middle" font-size="11" fill="#40566d">Range / bearing / track status / configurable warning zone R</text>
+        <path d="M380 342 V363" stroke="#526579" stroke-width="1.6" marker-end="url(#arrowPipe)"/><rect x="245" y="365" width="270" height="34" rx="8" fill="#203247"/><text x="380" y="386" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Vessel-Centric UI + Data Logging</text>
+      </svg>
+      <figcaption>Figure 1. Proposed software/data flow. Both the <code>0x11</code> point stream and <code>0x21</code> track stream are defined in the vendor protocol; actual output configuration and live decoding remain to be verified.</figcaption>
+    </figure>
+    <p>For point-level processing, range and angles are converted to Cartesian coordinates according to the vendor coordinate convention, after validating axes, signs, units and angle definitions. DBSCAN and radial velocity are candidate processing features, not presumed improvements. Cluster extent is reported as radar-visible extent rather than guaranteed physical object dimensions. Size is treated as one candidate feature, not an unconditional reason to reject a potentially hazardous small obstacle.</p>
+    <p>Temporal association creates persistent object identifiers and measures track continuity. The system then evaluates whether a confirmed obstacle intersects a configurable warning region <em>R</em>. Operational warning distance must ultimately be justified from vessel speed, response delay, stopping/avoidance capability and margin; it is not yet a validated safety threshold.</p>
   </div>
 
   <div id="multisensor">
     <h3>4.2 Configurable Multi-Sensor Architecture</h3>
-    <p>Each radar is treated as a repeatable sensor node. Its calibrated six-degree-of-freedom pose relative to the vessel origin is stored in a deployment configuration. A rigid-body transformation maps detections from each radar frame into the common vessel body frame. This allows sensor count and placement to change without restructuring the downstream processing pipeline.</p>
-    <p>The architecture is intended to support <em>N</em> sensors. The FYP will physically validate a maximum of two radar sensors while simulation can evaluate larger configurations and theoretical angular coverage.</p>
+    <p>Each radar is represented as a sensor node with a deployment configuration containing a unique sensor identity and a six-degree-of-freedom pose relative to the vessel body frame. A rigid-body transform maps each sensor's detections into the common vessel frame, after which the system can associate overlapping detections and tracks. The processing stack is designed for a configurable number of nodes, while the practical FYP target is integration of up to two radars.</p>
+    <p>Configurability means changing sensor count, calibrated pose, warning distance and processing parameters through configuration rather than rewriting the detection pipeline. Coverage claims will account for mounting height, pitch, hull occlusion and the difference between nominal field of view and measured detection capability. Each CTLRR-540 has a nominal ±60° horizontal FOV; two such units do not by themselves guarantee 360° coverage. Larger sensor configurations will be assessed geometrically/synthetically, while physical validation will be limited by available hardware and time.</p>
   </div>
 
   <div id="comms">
     <h3>4.3 Communications Architecture</h3>
-    <pre>
-CTLRR-540 #1 --100BASE-T1-- Media Converter #1 --\
-                                                    \
-CTLRR-540 #2 --100BASE-T1-- Media Converter #2 ------ Ethernet Switch
-                                                    /
-CTLRR-540 #N --100BASE-T1-- Media Converter #N ----/
-                                                     |
-                                                     v
-                                                SBC Ethernet NIC
-                                                     |
-                                                     v
-                                          Radar Driver / Decoder
-                                                     |
-                                                     v
-                                        Vessel-frame Transformation
-                                                     |
-                                                     v
-                                             Multi-Radar Fusion
-                                                     |
-                                                     v
-                                      DBSCAN / Persistence / Alarm
-                                                     |
-                                                     v
-                                           Vessel-Centric 3D UI
-    </pre>
-    <p>The preferred network arrangement gives each radar a unique network identity and routes the converted standard-Ethernet links through a switch to the SBC. Vendor confirmation is required for IP-address configuration, transport protocol, point-cloud packet format, timestamping/synchronisation and simultaneous multi-radar operation.</p>
+    <p>The proposed data path converts the radar's two-wire automotive Ethernet interface to standard RJ45 Ethernet, then connects each radar node through an Ethernet switch to the Jetson AGX Xavier. The CTLRR-540 manual identifies the differential Ethernet pins as <code>ETH_M</code> and <code>ETH_P</code> and specifies a 100 Mbps Ethernet interface. The supplied LD-100BASE-T1 converter is described by the vendor as an automotive-Ethernet-to-RJ45 physical-layer converter. Final PHY compatibility, master/slave setting and harness pinout should be confirmed against the supplied hardware.</p>
+    <figure class="architecture-figure">
+      <svg viewBox="0 0 760 360" role="img" aria-labelledby="commsTitle commsDesc" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block">
+        <title id="commsTitle">Communications architecture</title><desc id="commsDesc">Two radar nodes each connect over two-wire automotive Ethernet to a media converter. Each converter connects by RJ45 Ethernet to a Gigabit Ethernet switch, which connects to the Jetson AGX Xavier running Linux.</desc>
+        <defs><marker id="arrowNet" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#526579"/></marker></defs>
+        <rect x="18" y="25" width="172" height="48" rx="8" fill="#e4f5ef" stroke="#72ad9b"/><text x="104" y="45" text-anchor="middle" font-size="13" font-weight="700" fill="#174e42">CTLRR-540 #1</text><text x="104" y="61" text-anchor="middle" font-size="10" fill="#285e52">ETH_P / ETH_M</text>
+        <rect x="18" y="104" width="172" height="48" rx="8" fill="#e4f5ef" stroke="#72ad9b"/><text x="104" y="124" text-anchor="middle" font-size="13" font-weight="700" fill="#174e42">CTLRR-540 #2</text><text x="104" y="140" text-anchor="middle" font-size="10" fill="#285e52">Second node, if procured</text>
+        <path d="M190 49 H234 M190 128 H234" stroke="#526579" stroke-width="1.6" marker-end="url(#arrowNet)"/><text x="212" y="39" text-anchor="middle" font-size="9" fill="#40566d">100 Mbps</text><text x="212" y="118" text-anchor="middle" font-size="9" fill="#40566d">100 Mbps</text>
+        <rect x="236" y="25" width="171" height="48" rx="8" fill="#eaf0f7" stroke="#8da1b8"/><text x="321" y="45" text-anchor="middle" font-size="12" font-weight="700" fill="#203247">LD-100BASE-T1 #1</text><text x="321" y="61" text-anchor="middle" font-size="10" fill="#40566d">PHY media converter</text>
+        <rect x="236" y="104" width="171" height="48" rx="8" fill="#eaf0f7" stroke="#8da1b8"/><text x="321" y="124" text-anchor="middle" font-size="12" font-weight="700" fill="#203247">LD-100BASE-T1 #2</text><text x="321" y="140" text-anchor="middle" font-size="10" fill="#40566d">One converter per radar</text>
+        <path d="M407 49 H448 V88 H467 M407 128 H448 V103 H467" fill="none" stroke="#526579" stroke-width="1.6" marker-end="url(#arrowNet)"/><text x="446" y="30" text-anchor="middle" font-size="10" fill="#40566d">RJ45 / Cat5e or Cat6</text>
+        <rect x="469" y="65" width="132" height="62" rx="8" fill="#eaf0f7" stroke="#8da1b8"/><text x="535" y="89" text-anchor="middle" font-size="13" font-weight="700" fill="#203247">Ethernet</text><text x="535" y="105" text-anchor="middle" font-size="13" font-weight="700" fill="#203247">Switch</text><text x="535" y="118" text-anchor="middle" font-size="9" fill="#40566d">Gigabit recommended</text>
+        <path d="M601 96 H630" stroke="#526579" stroke-width="1.6" marker-end="url(#arrowNet)"/><text x="615" y="84" text-anchor="middle" font-size="9" fill="#40566d">RJ45</text>
+        <rect x="632" y="55" width="115" height="82" rx="8" fill="#203247"/><text x="689" y="77" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Jetson AGX</text><text x="689" y="93" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Xavier</text><text x="689" y="111" text-anchor="middle" font-size="10" fill="#dbe7f3">Linux NIC</text><text x="689" y="124" text-anchor="middle" font-size="9" fill="#dbe7f3">ROS 2 host</text>
+        <path d="M689 137 V178" stroke="#526579" stroke-width="1.6" marker-end="url(#arrowNet)"/><rect x="497" y="180" width="250" height="46" rx="8" fill="#fff2df" stroke="#d6a45f"/><text x="622" y="199" text-anchor="middle" font-size="12" font-weight="700" fill="#754710">Linux UDP Receiver</text><text x="622" y="214" text-anchor="middle" font-size="10" fill="#754710">Protocol decoder + frame assembly</text>
+        <path d="M622 226 V247" stroke="#526579" stroke-width="1.6" marker-end="url(#arrowNet)"/><rect x="497" y="249" width="250" height="47" rx="8" fill="#e4f5ef" stroke="#72ad9b"/><text x="622" y="268" text-anchor="middle" font-size="12" font-weight="700" fill="#174e42">Point / Track Topics</text><text x="622" y="283" text-anchor="middle" font-size="10" fill="#285e52">0x11 detection points and 0x21 tracks</text>
+        <text x="18" y="201" font-size="11" font-weight="700" fill="#203247">Vendor-provided example</text><text x="18" y="220" font-size="11" fill="#40566d">UDP socket receiver uses</text><text x="18" y="236" font-size="11" fill="#40566d">port 51277 and multicast</text><text x="18" y="252" font-size="11" fill="#40566d">group 224.0.2.6.</text><text x="18" y="279" font-size="10" fill="#8b5e24">Verify against live configuration;</text><text x="18" y="293" font-size="10" fill="#8b5e24">these are example-code settings,</text><text x="18" y="307" font-size="10" fill="#8b5e24">not yet confirmed on delivered radar.</text>
+        <text x="380" y="338" text-anchor="middle" font-size="10" fill="#40566d">Topology is proposed; live packet delivery, unique IPs, multicast and dual-radar operation require bench validation.</text>
+      </svg>
+      <figcaption>Figure 2. Proposed communications path from radar PHY to the host-side decoder.</figcaption>
+    </figure>
+    <p>The vendor supplied a Python UDP receiver and a protocol matrix defining <code>0x11 RAW_TARGET_DATA</code> (post-DSP detection points) and <code>0x21 TRACK_TARGET_DATA</code> (tracked objects). The intended implementation reuses a standard Linux Ethernet NIC and socket stack, then develops a user-space packet decoder and frame assembler; a custom Linux kernel Ethernet driver is not expected for this standard RJ45 link.</p>
+    <p>The example receiver uses UDP port <code>51277</code> and multicast group <code>224.0.2.6</code>. These settings must be checked against the radar's actual configuration and packets. Two radars should have unique network identities where possible; identical factory IPs cannot be assumed to work on the same ordinary LAN merely by assigning multiple IP addresses to the host. Timestamp semantics, packet loss handling, point-field units/axis conventions, and simultaneous stream output will be validated during integration.</p>
   </div>
 
   <div id="power">
     <h3>4.4 Power System Architecture</h3>
-    <pre>
-Vessel DC Supply
-      |
-Main Fuse / Circuit Breaker
-      |
-Master Switch + Input Protection
-      |
-      +-----------------------+
-      |                       |
-      v                       v
-Regulated 12 V Rail      SBC DC-DC Rail
-      |                       |
-      +-- Fuse --> Radar #1   +--> SBC
-      +-- Fuse --> Radar #2
-      +-- Fuse --> Converter(s)
-      +-- Fuse --> Ethernet Switch (if voltage-compatible)
-    </pre>
-    <p>Each CTLRR-540 is specified at ≤10 W, giving a maximum radar-only load of 20 W (approximately 1.67 A at 12 V) for the two-radar prototype. Final supply sizing must additionally include the SBC, media converters, Ethernet switch, DC-DC conversion losses, startup/transient requirements and engineering margin.</p>
+    <p>The power design separates the radar supply, media converters, Ethernet switch and host computer into protected branches. The final vessel supply design depends on the available DC bus and the exact Xavier developer/carrier board; bench testing will use the correct Xavier power adapter and a current-limited radar supply until the integrated supply budget is verified.</p>
+    <figure class="architecture-figure">
+      <svg viewBox="0 0 760 390" role="img" aria-labelledby="powerTitle powerDesc" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block">
+        <title id="powerTitle">System power architecture</title><desc id="powerDesc">The vessel or bench DC source feeds a protected distribution point. Separate fused branches feed regulated 12 volt radar power, converter power, switch power and the Jetson power adapter or DC-DC supply matched to the hardware.</desc>
+        <defs><marker id="arrowPower" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#526579"/></marker></defs>
+        <rect x="260" y="12" width="240" height="43" rx="8" fill="#eaf0f7" stroke="#8da1b8"/><text x="380" y="30" text-anchor="middle" font-size="13" font-weight="700" fill="#203247">Vessel DC Bus / Bench Supply</text><text x="380" y="45" text-anchor="middle" font-size="10" fill="#40566d">Input voltage to be confirmed</text>
+        <path d="M380 55 V76" stroke="#526579" stroke-width="1.6" marker-end="url(#arrowPower)"/><rect x="247" y="78" width="266" height="48" rx="8" fill="#fff2df" stroke="#d6a45f"/><text x="380" y="97" text-anchor="middle" font-size="13" font-weight="700" fill="#754710">Master Disconnect + Protection</text><text x="380" y="113" text-anchor="middle" font-size="10" fill="#754710">Fuse / polarity protection / suitable transient protection</text>
+        <path d="M380 126 V152 H95 V179 M380 152 H285 V179 M380 152 H475 V179 M380 152 H665 V179" fill="none" stroke="#526579" stroke-width="1.5" marker-end="url(#arrowPower)"/>
+        <rect x="12" y="181" width="166" height="75" rx="8" fill="#e4f5ef" stroke="#72ad9b"/><text x="95" y="201" text-anchor="middle" font-size="12" font-weight="700" fill="#174e42">Protected 12 V rail</text><text x="95" y="218" text-anchor="middle" font-size="10" fill="#285e52">Radar #1: ≤10 W</text><text x="95" y="233" text-anchor="middle" font-size="10" fill="#285e52">Radar #2: ≤10 W</text><text x="95" y="247" text-anchor="middle" font-size="9" fill="#285e52">Each branch separately fused</text>
+        <rect x="202" y="181" width="166" height="75" rx="8" fill="#eaf0f7" stroke="#8da1b8"/><text x="285" y="201" text-anchor="middle" font-size="12" font-weight="700" fill="#203247">Converter supply</text><text x="285" y="218" text-anchor="middle" font-size="10" fill="#40566d">DC 9–36 V or USB 5 V</text><text x="285" y="233" text-anchor="middle" font-size="10" fill="#40566d">Per vendor label</text><text x="285" y="247" text-anchor="middle" font-size="9" fill="#40566d">Current draw to confirm</text>
+        <rect x="392" y="181" width="166" height="75" rx="8" fill="#eaf0f7" stroke="#8da1b8"/><text x="475" y="201" text-anchor="middle" font-size="12" font-weight="700" fill="#203247">Ethernet switch</text><text x="475" y="218" text-anchor="middle" font-size="10" fill="#40566d">Use specified DC adapter</text><text x="475" y="233" text-anchor="middle" font-size="10" fill="#40566d">or compatible protected rail</text><text x="475" y="247" text-anchor="middle" font-size="9" fill="#40566d">Model / power TBD</text>
+        <rect x="582" y="181" width="166" height="75" rx="8" fill="#eaf0f7" stroke="#8da1b8"/><text x="665" y="201" text-anchor="middle" font-size="12" font-weight="700" fill="#203247">Jetson AGX Xavier</text><text x="665" y="218" text-anchor="middle" font-size="10" fill="#40566d">Correct board adapter</text><text x="665" y="233" text-anchor="middle" font-size="10" fill="#40566d">or rated DC-DC stage</text><text x="665" y="247" text-anchor="middle" font-size="9" fill="#40566d">Exact carrier/mode to verify</text>
+        <path d="M95 256 V282 M285 256 V282 M475 256 V282 M665 256 V282" stroke="#526579" stroke-width="1.5" marker-end="url(#arrowPower)"/>
+        <rect x="12" y="284" width="166" height="45" rx="8" fill="#203247"/><text x="95" y="302" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Radar loads</text><text x="95" y="317" text-anchor="middle" font-size="10" fill="#dbe7f3">20 W max for 2 radars</text>
+        <rect x="202" y="284" width="166" height="45" rx="8" fill="#203247"/><text x="285" y="302" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Converters</text><text x="285" y="317" text-anchor="middle" font-size="10" fill="#dbe7f3">Add rated power per unit</text>
+        <rect x="392" y="284" width="166" height="45" rx="8" fill="#203247"/><text x="475" y="302" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Switch</text><text x="475" y="317" text-anchor="middle" font-size="10" fill="#dbe7f3">Add rated power</text>
+        <rect x="582" y="284" width="166" height="45" rx="8" fill="#203247"/><text x="665" y="302" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">SBC</text><text x="665" y="317" text-anchor="middle" font-size="10" fill="#dbe7f3">Largest variable load</text>
+        <text x="380" y="357" text-anchor="middle" font-size="11" font-weight="700" fill="#203247">Radar-only current at 12 V: 20 W / 12 V ≈ 1.67 A</text><text x="380" y="374" text-anchor="middle" font-size="10" fill="#40566d">Total supply sizing must include all loads, conversion losses, startup current and margin.</text>
+      </svg>
+      <figcaption>Figure 3. Proposed power distribution. Component-specific input ratings and branch protection must be confirmed before integrating the system to a vessel power bus.</figcaption>
+    </figure>
+    <p>Each CTLRR-540 is specified at 12 V and no more than 10 W. Therefore, the two-radar load is at most 20 W (about 1.67 A at 12 V), before engineering margin. The LD-100BASE-T1 converter label states DC 9–36 V or USB 5 V input; its current draw must be confirmed. The Ethernet switch supply and the exact AGX Xavier board power input must be matched to their respective specifications. Do not assume the radar's 12 V rail can power every component directly.</p>
   </div>
 
   <div id="ui">
@@ -248,7 +276,7 @@ Regulated 12 V Rail      SBC DC-DC Rail
     <p>Two-radar testing will then evaluate coordinate-frame fusion, overlap handling, placement trade-offs and any practical effects of simultaneous radar operation. The final system will be benchmarked against the LiDAR reference with particular emphasis on false alarms caused by maritime clutter.</p>
   </div>
 
-
+  <sl-divider></sl-divider>
 
   <div id="references" class="references">
     <sl-divider></sl-divider>
