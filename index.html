@@ -33,9 +33,8 @@
 <div class="content">
   <h1>Configurable mmWave Safety Sensor System for Omnidirectional Short-Range Obstacle Detection on Maritime Vehicles</h1>
 
-  <!-- Replace the placeholder details below with your actual name, department, year and avatar. -->
   <div class="team-member-wrapper">
-    <team-member avatar="assets/profile.png" name="Duan Yihe" department="Electrical & Computer Engineering" year="AY26/27"></team-member>
+    <team-member avatar="assets/profile.jpg" name="Duan Yihe" department="Electrical & Computer Engineering" year="AY26/27"></team-member>
   </div>
 
   <sl-divider></sl-divider>
@@ -61,8 +60,9 @@
         <sl-tree-item><a href="#power">4.4 Power Architecture</a></sl-tree-item>
         <sl-tree-item><a href="#ui">4.5 Visualisation</a></sl-tree-item>
       </sl-tree-item>
-      <sl-tree-item expanded><a href="#interim">5. Interim Development & Validation</a>
-        <sl-tree-item><a href="#interim">5.1 Water-Spray Characterization</a></sl-tree-item>
+      <sl-tree-item expanded><a href="#Comparative_dev">5. Sensor Comparative Development & Validation</a>
+        <sl-tree-item><a href="#Comparative_dev">5.1 Water-Spray Experiments</a></sl-tree-item>
+        <sl-tree-item><a href="#results">5.2 Preliminary Observations &amp; Analysis</a></sl-tree-item>
         <sl-tree-item><a href="#simulation">5.3 Supporting Software Development</a></sl-tree-item>
         <sl-tree-item><a href="#hypotheses">5.4 Hypotheses</a></sl-tree-item>
       </sl-tree-item>
@@ -199,29 +199,10 @@
   </div>
 
   <div id="power">
-    <h3>4.4 Power System Architecture</h3>
-    <p>The power design separates the radar supply, media converters, Ethernet switch and host computer into protected branches. The final vessel supply design depends on the available DC bus and the exact Xavier developer/carrier board; bench testing will use the correct Xavier power adapter and a current-limited radar supply until the integrated supply budget is verified.</p>
-    <figure class="architecture-figure">
-      <svg viewBox="0 0 760 390" role="img" aria-labelledby="powerTitle powerDesc" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block">
-        <title id="powerTitle">System power architecture</title><desc id="powerDesc">The vessel or bench DC source feeds a protected distribution point. Separate fused branches feed regulated 12 volt radar power, converter power, switch power and the Jetson power adapter or DC-DC supply matched to the hardware.</desc>
-        <defs><marker id="arrowPower" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#526579"/></marker></defs>
-        <rect x="260" y="12" width="240" height="43" rx="8" fill="#eaf0f7" stroke="#8da1b8"/><text x="380" y="30" text-anchor="middle" font-size="13" font-weight="700" fill="#203247">Vessel DC Bus / Bench Supply</text><text x="380" y="45" text-anchor="middle" font-size="10" fill="#40566d">Input voltage to be confirmed</text>
-        <path d="M380 55 V76" stroke="#526579" stroke-width="1.6" marker-end="url(#arrowPower)"/><rect x="247" y="78" width="266" height="48" rx="8" fill="#fff2df" stroke="#d6a45f"/><text x="380" y="97" text-anchor="middle" font-size="13" font-weight="700" fill="#754710">Master Disconnect + Protection</text><text x="380" y="113" text-anchor="middle" font-size="10" fill="#754710">Fuse / polarity protection / suitable transient protection</text>
-        <path d="M380 126 V152 H95 V179 M380 152 H285 V179 M380 152 H475 V179 M380 152 H665 V179" fill="none" stroke="#526579" stroke-width="1.5" marker-end="url(#arrowPower)"/>
-        <rect x="12" y="181" width="166" height="75" rx="8" fill="#e4f5ef" stroke="#72ad9b"/><text x="95" y="201" text-anchor="middle" font-size="12" font-weight="700" fill="#174e42">Protected 12 V rail</text><text x="95" y="218" text-anchor="middle" font-size="10" fill="#285e52">Radar #1: ≤10 W</text><text x="95" y="233" text-anchor="middle" font-size="10" fill="#285e52">Radar #2: ≤10 W</text><text x="95" y="247" text-anchor="middle" font-size="9" fill="#285e52">Each branch separately fused</text>
-        <rect x="202" y="181" width="166" height="75" rx="8" fill="#eaf0f7" stroke="#8da1b8"/><text x="285" y="201" text-anchor="middle" font-size="12" font-weight="700" fill="#203247">Converter supply</text><text x="285" y="218" text-anchor="middle" font-size="10" fill="#40566d">DC 9–36 V or USB 5 V</text><text x="285" y="233" text-anchor="middle" font-size="10" fill="#40566d">Per vendor label</text><text x="285" y="247" text-anchor="middle" font-size="9" fill="#40566d">Current draw to confirm</text>
-        <rect x="392" y="181" width="166" height="75" rx="8" fill="#eaf0f7" stroke="#8da1b8"/><text x="475" y="201" text-anchor="middle" font-size="12" font-weight="700" fill="#203247">Ethernet switch</text><text x="475" y="218" text-anchor="middle" font-size="10" fill="#40566d">Use specified DC adapter</text><text x="475" y="233" text-anchor="middle" font-size="10" fill="#40566d">or compatible protected rail</text><text x="475" y="247" text-anchor="middle" font-size="9" fill="#40566d">Model / power TBD</text>
-        <rect x="582" y="181" width="166" height="75" rx="8" fill="#eaf0f7" stroke="#8da1b8"/><text x="665" y="201" text-anchor="middle" font-size="12" font-weight="700" fill="#203247">Jetson AGX Xavier</text><text x="665" y="218" text-anchor="middle" font-size="10" fill="#40566d">Correct board adapter</text><text x="665" y="233" text-anchor="middle" font-size="10" fill="#40566d">or rated DC-DC stage</text><text x="665" y="247" text-anchor="middle" font-size="9" fill="#40566d">Exact carrier/mode to verify</text>
-        <path d="M95 256 V282 M285 256 V282 M475 256 V282 M665 256 V282" stroke="#526579" stroke-width="1.5" marker-end="url(#arrowPower)"/>
-        <rect x="12" y="284" width="166" height="45" rx="8" fill="#203247"/><text x="95" y="302" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Radar loads</text><text x="95" y="317" text-anchor="middle" font-size="10" fill="#dbe7f3">20 W max for 2 radars</text>
-        <rect x="202" y="284" width="166" height="45" rx="8" fill="#203247"/><text x="285" y="302" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Converters</text><text x="285" y="317" text-anchor="middle" font-size="10" fill="#dbe7f3">Add rated power per unit</text>
-        <rect x="392" y="284" width="166" height="45" rx="8" fill="#203247"/><text x="475" y="302" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Switch</text><text x="475" y="317" text-anchor="middle" font-size="10" fill="#dbe7f3">Add rated power</text>
-        <rect x="582" y="284" width="166" height="45" rx="8" fill="#203247"/><text x="665" y="302" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">SBC</text><text x="665" y="317" text-anchor="middle" font-size="10" fill="#dbe7f3">Largest variable load</text>
-        <text x="380" y="357" text-anchor="middle" font-size="11" font-weight="700" fill="#203247">Radar-only current at 12 V: 20 W / 12 V ≈ 1.67 A</text><text x="380" y="374" text-anchor="middle" font-size="10" fill="#40566d">Total supply sizing must include all loads, conversion losses, startup current and margin.</text>
-      </svg>
-      <figcaption>Figure 3. Proposed power distribution. Component-specific input ratings and branch protection must be confirmed before integrating the system to a vessel power bus.</figcaption>
-    </figure>
-    <p>Each CTLRR-540 is specified at 12 V and no more than 10 W. Therefore, the two-radar load is at most 20 W (about 1.67 A at 12 V), before engineering margin. The LD-100BASE-T1 converter label states DC 9–36 V or USB 5 V input; its current draw must be confirmed. The Ethernet switch supply and the exact AGX Xavier board power input must be matched to their respective specifications. Do not assume the radar's 12 V rail can power every component directly.</p>
+    <h3>4.4 Power Architecture and Near-Term Test Setup</h3>
+    <p>Initial sensor testing requires DC power for the CTLRR-540 radar (12 V, at most 10 W), its Ethernet converter (9–36 V DC or 5 V USB), and the Livox LiDAR according to its own model-specific rating. The Jetson AGX Xavier supply depends on the exact carrier board. A future dual-radar installation would also require a second converter and an Ethernet switch, whose supply requirements remain to be verified.</p>
+    <p>Bench power supplies and exposed temporary wiring are inconvenient near the water-spray apparatus and introduce electrical safety concerns. Following discussion with ST Engineering, the near-term plan is to use an EcoFlow portable power station with correctly rated DC adapters and terminated cables, keeping the station and unsealed connections outside the wet-test area. The LiDAR power connector, polarity, allowable voltage range and current demand must be checked before fabricating a cable or energizing the unit. Bare power and ground leads must not be connected directly to AC outlets.</p>
+    <p>A custom autonomous, default-on six-channel distribution PCB (Jetson, two radars, two converters and one spare output) remains a possible future USV-integration option, not an immediate test prerequisite. If pursued, the design would use independent protected branches, appropriate regulation, and no onboard switching MCU. Mechanical layout, the vessel DC bus, Jetson carrier-board requirements and any Ethernet-switch supply must be confirmed with ST before fabrication.</p>
   </div>
 
   <div id="ui">
@@ -231,26 +212,42 @@
 
   <sl-divider></sl-divider>
 
-  <div id="interim">
-    <h2>5. Interim Development &amp; Validation</h2>
-    <p>The Semester 1 interim work prioritises a controlled LiDAR baseline characterization of temporary target-visibility loss under water spray. This establishes a repeatable, instrument-specific benchmark for later comparison with the CTLRR-540. The radar's procurement lead time means physical radar results are not assumed for the interim assessment. Experimental findings will be reported only after data collection and analysis.</p>
+  <div id="comparative_dev">
+    <h2>5. Sensor Comparative Development &amp; Validation</h2>
+    <p>Initial controlled recordings have been completed using the Livox LiDAR and a camera to examine how water exposure affects observation of a stationary cardboard-box target. The purpose of this pilot is to establish observable failure modes and develop an analysis workflow; it is not yet a quantitative comparison of LiDAR and mmWave radar performance.</p>
+    <h3>5.1 Completed Water-Interference Recordings</h3>
+    <p>The setup used a stationary cardboard box approximately 3 m from the sensors, with water introduced either directly onto the sensor or into the line of sight (LOS) between the sensor and target. The water delivery was short-duration and manually replenished; the available stream lasted up to approximately five seconds per fill. Exact trial timing and camera/LiDAR synchronization have not yet been established from the recordings.</p>
+    <table style="width:100%;border-collapse:collapse"><thead><tr><th style="text-align:left">Sensor</th><th style="text-align:left">Condition</th><th>Recorded runs</th></tr></thead><tbody>
+    <tr><td>LiDAR</td><td>Dry baseline</td><td>1</td></tr>
+    <tr><td>LiDAR</td><td>Water poured onto sensor</td><td>1</td></tr>
+    <tr><td>LiDAR</td><td>Water poured across target LOS</td><td>2</td></tr>
+    <tr><td>Camera</td><td>Water poured across target LOS</td><td>1</td></tr>
+    <tr><td>Camera</td><td>Water poured onto sensor</td><td>1</td></tr>
+    </tbody></table>
+    <p>Six runs were recorded in total: four LiDAR runs and two camera runs. The baseline point-cloud visualization contains a yellow return cluster identified as the cardboard-box target. During an LOS water-interference recording, the target returns appeared temporarily reduced, missing or displaced; additional transient returns were also observed. These observations are preliminary and have not yet been attributed conclusively to particular physical scattering mechanisms.</p>
+    <h3>5.1.1 Experiment Videos</h3>
+    <div class="experiment-videos">
+      <!-- Replace VIDEO_ID with the actual YouTube video ID; remove placeholders before public release. -->
+      <!-- <video-component tag="lidar-baseline" source="https://www.youtube.com/embed/VIDEO_ID" subtitle="LiDAR — dry baseline (run 1)"></video-component> -->
+      <!-- <video-component tag="lidar-on-1" source="https://www.youtube.com/embed/VIDEO_ID" subtitle="LiDAR — water poured onto sensor (run 1)"></video-component> -->
+      <!-- <video-component tag="lidar-los-1" source="https://www.youtube.com/embed/VIDEO_ID" subtitle="LiDAR — water across line of sight (run 1)"></video-component> -->
+      <video-component tag="lidar-los-2" source="https://youtu.be/CEztvxuHq8w" subtitle="LiDAR — water across line of sight (run 2)"></video-component>
+      <!-- <video-component tag="camera-los-1" source="https://www.youtube.com/embed/VIDEO_ID" subtitle="Camera — water across line of sight (run 1)"></video-component> -->
+      <!-- <video-component tag="camera-on-1" source="https://www.youtube.com/embed/VIDEO_ID" subtitle="Camera — water poured onto sensor (run 1)"></video-component> -->
+    </div>
+  </div>
 
-    <h3>5.1 Controlled LiDAR Water-Spray Characterization</h3>
-    <p><strong>Research question:</strong> How does a repeatable water-spray disturbance crossing the LiDAR-to-target optical path affect fresh target measurements, the duration of detection loss and recovery after spray cessation?</p>
-    <p><strong>Apparatus:</strong> Livox Mid-360 LiDAR on a fixed mount; Insta360 X4 camera for scene documentation and spray-event annotation; a stationary, measured solid target approximately 3–5 m from the LiDAR; a controlled shower or nozzle directed into a collection vessel; and a computer recording timestamped point-cloud data. The target distance, sensor height, spray position, target dimensions and acquisition settings will be documented. Wet testing requires a suitable location, safe power isolation and water containment.</p>
-    <p><strong>Protocol:</strong> Each target-present trial comprises approximately 10 s of unobstructed baseline, 10 s with spray crossing the line of sight, and 20 s after spray stops. The intended pilot uses 5–10 repeated trials per condition where feasible. Separate target-absent control recordings will distinguish spray/background returns from true target returns. Spray start and stop will be annotated using synchronized video or a recorded timing cue.</p>
-    <p><strong>Spray characterization:</strong> Collected water volume <em>V</em>, horizontal collection area <em>A</em> and collection time <em>t</em> give an equivalent precipitation rate <em>I = V/(A t)</em>, reported in mm/h after unit conversion. This is a repeatability descriptor; it does not imply that a shower reproduces natural rainfall droplet distributions or vessel-generated sea spray.</p>
-    <p><strong>Offline processing:</strong> Record the complete timestamped LiDAR point-cloud stream first, then replay it for analysis. A fixed three-dimensional target region of interest (ROI) is defined from the measured target location and dry baseline. A separate spray ROI describes the disturbed optical path; bucket walls, floor and other fixed background geometry are excluded. Points are grouped into fixed-duration observation windows. The same predeclared target-return rule is applied to dry, spray and recovery windows, without relying on tracker-predicted positions.</p>
-
-    <h3>5.2 Quantitative Baseline Metrics</h3>
+  <div id="results">
+    <h3>5.2 Preliminary Observations and Planned Cluster-Based Analysis</h3>
+    <p><strong>Qualitative observation:</strong> The LiDAR visualization suggests intermittent loss or distortion of the stationary box returns when water passes across the optical path. Additional returns may originate from droplets or other scene elements. A measured droplet return is not itself a false measurement; a false obstacle alarm would occur only if the downstream detection system incorrectly treats it as a hazardous obstacle.</p>
+    <p><strong>Analysis approach:</strong> Rather than using raw point counts inside a manually selected target ROI as the primary detection measure, the recorded point clouds will be processed using a reproducible clustering pipeline. Candidate stages are spatial filtering, removal of known static surfaces, Euclidean or DBSCAN clustering, cluster-level association with the measured box position, and temporal tracking. The same fixed pipeline and parameters will be applied across baseline and water-interference recordings, with sensitivity checks where appropriate.</p>
     <ul>
-      <li><strong>Target measurement availability:</strong> <em>A = N<sub>visible</sub> / N<sub>eligible</sub> &times; 100%</em>, where a visible window satisfies a fixed target-associated return criterion. Report dry and spray intervals separately; this is not automatically object-detector accuracy.</li>
-      <li><strong>Continuous measurement-loss duration:</strong> <em>T<sub>loss,i</sub> = t<sub>end,i</sub> &minus; t<sub>start,i</sub></em> for each consecutive run of unavailable target measurements. Report maximum duration, distribution and event count.</li>
-      <li><strong>Post-spray recovery time:</strong> <em>T<sub>recovery</sub> = t<sub>stable reacquisition</sub> &minus; t<sub>spray off</sub></em>. Stable reacquisition requires a fixed number of consecutive visible windows; report zero if visibility never ceased, and censor trials without reacquisition during observation.</li>
-      <li><strong>Target-region point retention:</strong> <em>P<sub>retention</sub> = mean(N<sub>ROI,spray</sub>) / mean(N<sub>ROI,dry</sub>) &times; 100%</em>. Because spray returns may enter the target ROI, this is a proxy for visibility, not a guaranteed count of genuine target reflections.</li>
+      <li><strong>Cluster-level target availability:</strong> Fraction of observation windows in which a cluster meeting predeclared spatial and quality criteria is associated with the box.</li>
+      <li><strong>Target loss and reacquisition:</strong> Consecutive intervals without a matched target cluster and time to stable reacquisition after water stops.</li>
+      <li><strong>Cluster geometry stability:</strong> Changes in estimated centroid, visible extent and fragmentation relative to baseline.</li>
+      <li><strong>Spurious cluster rate:</strong> Unmatched transient clusters in relevant empty-space regions, with video-assisted interpretation where possible.</li>
     </ul>
-    <p><strong>Secondary measurements:</strong> point counts in the empty-space spray ROI, target range error when valid target returns are available, and false obstacle-warning events if a separately specified and fixed detection algorithm is evaluated. Measurement loss, object detection failure and tracker prediction will be reported as distinct phenomena.</p>
-    <p><strong>Interpretation and limitations:</strong> This laboratory study isolates an optical-path disturbance rather than reproducing full maritime sea states, vessel motion or window wetting. It characterizes the particular LiDAR configuration used and does not establish that all LiDAR technologies fail. Subsequent radar testing will repeat equivalent controlled scenarios and use independent target ground truth.</p>
+    <p>No clustering algorithm has yet been run on these recordings, and no numerical detection-rate or false-alarm claims are made at this stage. Ground-truth timing, coordinate-frame interpretation, repeatability and possible confounding background objects remain to be checked.</p>
   </div>
 
   <div id="simulation">
@@ -272,7 +269,7 @@
 
   <div id="validation">
     <h2>6. Experimental Validation Plan</h2>
-    <p>After hardware arrival, controlled single-radar tests will characterise range, angular performance, point-cloud density, update rate, data interface behaviour and the contribution of Doppler information. The radar will subsequently be deployed on the NUS Bumblebee Autonomous Systems BlueBoat platform. Existing LiDAR and camera sensing will provide reference information for evaluating detection rate, false alarm rate, latency and angular coverage under maritime conditions.</p>
+    <p>Following delivery and integration of the CTLRR-540, controlled single-radar tests will characterise range, angular performance, point-cloud density, update rate, data interface behaviour and the contribution of Doppler information. The radar is intended subsequently to be deployed on the NUS Bumblebee Autonomous Systems BlueBoat platform. Existing LiDAR and camera sensing will provide reference information for evaluating detection rate, false alarm rate, latency and angular coverage under maritime conditions.</p>
     <p>Two-radar testing will then evaluate coordinate-frame fusion, overlap handling, placement trade-offs and any practical effects of simultaneous radar operation. The final system will be benchmarked against the LiDAR reference with particular emphasis on false alarms caused by maritime clutter.</p>
   </div>
 
