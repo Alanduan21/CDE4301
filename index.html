@@ -26,6 +26,37 @@
     .architecture-figure text { font-family: Arial, Helvetica, sans-serif; }
     #comms p, #power p, #methodology p, #detection p, #multisensor p { line-height: 1.65; }
     #comms code, #detection code { background: #eef2f6; padding: .1rem .3rem; border-radius: 4px; }
+
+    /* video formatting */
+    .experiment-videos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    margin: 20px 0 32px;
+  }
+
+  .experiment-videos video-component {
+    display: block;
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* Responsive layout for mobile */
+  @media (max-width: 768px) {
+    .experiment-videos {
+      grid-template-columns: 1fr;
+    }
+  }
+
+
+  .team-member-wrapper img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    object-position: center 30%;
+    border-radius: 50%;
+  }
+
   </style>
 
 </head>
@@ -225,7 +256,17 @@
     <tr><td>Camera</td><td>Water poured onto sensor</td><td>1</td></tr>
     </tbody></table>
     <p>Six runs were recorded in total: four LiDAR runs and two camera runs. The baseline point-cloud visualization contains a yellow return cluster identified as the cardboard-box target. During an LOS water-interference recording, the target returns appeared temporarily reduced, missing or displaced; additional transient returns were also observed. These observations are preliminary and have not yet been attributed conclusively to particular physical scattering mechanisms.</p>
-    <h3>5.1.1 Experiment Videos</h3>
+    <h3>5.1.1 Comparative Experiment Setup</h3>
+    The LiDAR and camera were mounted on a tripod at approximately 1.5 m height, with the cardboard box target placed 3 m away. Water was introduced either directly onto the sensor or across the line of sight to the target. The water source was a manually operated spray bottle, and each run lasted for a few seconds. The environment was controlled to minimize external factors.
+    
+    <image-component 
+    tag="comparative_dev" 
+    source="assets/comparative_experiment_setup.JPEG"
+    subtitle="Experiment setup showing LiDAR, camera, and cardboard box target"
+></image-component>
+
+
+    <h3>5.1.2 Experiment Videos</h3>
     <div class="experiment-videos">
       <!-- Replace VIDEO_ID with the actual YouTube video ID; remove placeholders before public release. -->
       <video-component tag="lidar-baseline" source="https://www.youtube.com/embed/sp28YX2gcUQ" subtitle="LiDAR — dry baseline (run 1)"></video-component>
