@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Configurable mmWave Safety Sensor System</title>
+  <title>Configurable Maritime Proximity-Sensing and Berthing Assistance System</title>
   <link rel="icon" href="./favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.16.0/cdn/themes/light.css" />
   <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.16.0/cdn/shoelace-autoloader.js"></script>
@@ -57,12 +57,63 @@
     border-radius: 50%;
   }
 
+  .project-timeline {
+    list-style: none;
+    margin: 1.5rem 0;
+    padding: 0 0 0 1.25rem;
+    border-left: 2px solid #d7e0e8;
+  }
+
+  .project-timeline li {
+    position: relative;
+    margin: 0 0 1.25rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid #d7e0e8;
+    border-radius: 10px;
+    background: #fbfcfe;
+  }
+
+  .project-timeline li::before {
+    position: absolute;
+    top: 1.25rem;
+    left: -1.72rem;
+    width: .75rem;
+    height: .75rem;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    background: #3478a8;
+    content: "";
+  }
+
+  .project-timeline h3 {
+    margin: 0 0 .25rem;
+  }
+
+  .project-timeline .timeline-dates {
+    margin: 0 0 .75rem;
+    color: #526579;
+    font-size: .95rem;
+    font-weight: 600;
+  }
+
+  .project-timeline ul {
+    margin-bottom: 0;
+  }
+
+  .submission-milestone {
+    margin-top: 1.5rem;
+    padding: 1rem 1.25rem;
+    border-left: 4px solid #3478a8;
+    border-radius: 6px;
+    background: #eef5fa;
+  }
+
   </style>
 
 </head>
 <body>
 <div class="content">
-  <h1>Configurable mmWave Safety Sensor System for Omnidirectional Short-Range Obstacle Detection on Maritime Vehicles</h1>
+  <h1>Configurable Maritime Proximity-Sensing and Berthing Assistance System</h1>
 
   <div class="team-member-wrapper">
     <team-member avatar="assets/profile.jpg" name="Duan Yihe" department="Electrical & Computer Engineering" year="AY26/27"></team-member>
@@ -77,9 +128,10 @@
         <sl-tree-item><a href="#gap">1.1 Problem Gap</a></sl-tree-item>
         <sl-tree-item><a href="#value">1.2 Project Value</a></sl-tree-item>
       </sl-tree-item>
-      <sl-tree-item expanded><a href="#objectives">2. Objectives & Scope</a>
-        <sl-tree-item><a href="#requirements">2.1 System Requirements</a></sl-tree-item>
-        <sl-tree-item><a href="#metrics">2.2 Evaluation Metrics</a></sl-tree-item>
+      <sl-tree-item expanded><a href="#objectives">2. Objectives &amp; Scope</a>
+        <sl-tree-item><a href="#vessels">2.1 Target Vessels and Operating Boundary</a></sl-tree-item>
+        <sl-tree-item><a href="#requirements">2.2 System Requirements</a></sl-tree-item>
+        <sl-tree-item><a href="#metrics">2.3 Evaluation Metrics</a></sl-tree-item>
       </sl-tree-item>
       <sl-tree-item expanded><a href="#sensor-selection">3. Sensor Technology Selection</a>
         <sl-tree-item><a href="#selected-radar">3.1 Selected Radar</a></sl-tree-item>
@@ -91,63 +143,74 @@
         <sl-tree-item><a href="#power">4.4 Power Architecture</a></sl-tree-item>
         <sl-tree-item><a href="#ui">4.5 Visualisation</a></sl-tree-item>
       </sl-tree-item>
-      <sl-tree-item expanded><a href="#Comparative_dev">5. Sensor Comparative Development & Validation</a>
-        <sl-tree-item><a href="#Comparative_dev">5.1 Water-Spray Experiments</a></sl-tree-item>
-        <sl-tree-item><a href="#results">5.2 Preliminary Observations &amp; Analysis</a></sl-tree-item>
+      <sl-tree-item expanded><a href="#comparative_dev">5. Sensor Comparative Development & Validation</a>
+        <sl-tree-item><a href="#comparative_dev">5.1 LiDAR/Camera Pilot</a></sl-tree-item>
+        <sl-tree-item><a href="#results">5.2 Observations and Analysis</a></sl-tree-item>
         <sl-tree-item><a href="#simulation">5.3 Supporting Software Development</a></sl-tree-item>
         <sl-tree-item><a href="#hypotheses">5.4 Hypotheses</a></sl-tree-item>
       </sl-tree-item>
-      <sl-tree-item expanded><a href="#validation">6. Experimental Validation Plan</a></sl-tree-item>
-      <sl-tree-item><a href="#references">References</a></sl-tree-item>
+      <sl-tree-item expanded><a href="#validation">6. Validation Protocol and Shortcomings</a>
+        <sl-tree-item><a href="#validation-matrix">6.1 Planned Test Matrix</a></sl-tree-item>
+        <sl-tree-item><a href="#actions">6.2 Corrective Actions and Contingencies</a></sl-tree-item>
+      </sl-tree-item>
+      <sl-tree-item><a href="#timeline">7. Project Timeline</a></sl-tree-item>
+      <sl-tree-item><a href="#references">8. References</a></sl-tree-item>
     </sl-tree>
   </div>
 
   <sl-divider></sl-divider>
 
   <div id="problem">
-    <h2>1. Problem, Motivation & Context</h2>
-    <p>Maritime vehicles rely on multiple sensors for navigation and situational awareness, yet a dedicated short-range proximity safety layer is required to reliably detect obstacles in the vessel's immediate surroundings and support collision avoidance. This project investigates a configurable millimetre-wave (mmWave) sensing system for this role.</p>
+    <h2>1. Problem, Motivation &amp; Context</h2>
+    <p>This project with ST Engineering's AUTONOMAST product and technology department in ST UIS investigates a configurable 4D mmWave sensing aid for human operators during berthing and close-quarters navigation. It targets quay structures, vessels, buoys and floating debris across different vessel sizes.</p>
   </div>
 
   <div id="gap">
-    <h3>1.1 Problem Gap</h3>
-    <p>LiDAR has been explored for maritime perception, but close-range operation can be affected by wave splash, spray and other maritime clutter. On the ST Engineering platform motivating this project, LiDAR is used primarily for target tracking at range rather than as a dedicated close-range safety sensor. The project therefore investigates whether mmWave radar can provide a more robust short-range proximity sensing layer while retaining useful spatial and velocity information.</p>
+    <h3>1.1 Evidence Gap and Project Contribution</h3>
+    <p>Radar-assisted berthing is established: R-BAD reports an onboard multi-radar system and over 69 hours of synchronized radar/video data. Separate 77 GHz research detects small marine targets in dynamic sea scenes using specialized beamforming and clutter processing (Papadopoulos et al., 2025; Pirkani et al., 2024). This project does not claim to be the first radar berthing aid.</p>
+    <p>Its contribution is to characterize a sourced automotive 4D radar as a configurable close-range aid across two vessel scales, measuring detection, coverage and integration limits. Rain can reduce LiDAR returns, while 77 GHz radar can also generate close-range rain clutter (Filgueira et al., 2017; Gourova et al., 2017). Weather robustness is a test question, not an assumption.</p>
   </div>
 
   <div id="value">
     <h3>1.2 Project Value</h3>
-    <p>The intended contribution is not only a radar installation, but a configurable sensing architecture that can be adapted to vessels of different geometries and sensor counts. The project combines sensor technology evaluation, configurable multi-sensor integration, point-cloud processing, proximity alarming, visualisation, and maritime validation against LiDAR/camera reference data.</p>
+    <p>The deliverable is a configurable workflow that transforms detections into a vessel frame and displays nearby objects to an operator. Reuse and placement guidance are to be evaluated; this is not a certified warning system or autonomous controller. AUTONOMAST integration is outside scope because no interface is confirmed.</p>
   </div>
 
   <sl-divider></sl-divider>
 
   <div id="objectives">
-    <h2>2. Objectives & Scope</h2>
-    <p>The project aims to evaluate candidate technologies for short-range omnidirectional proximity detection on maritime vehicles, select a suitable sensing technology using defined performance criteria, and deliver a functional multi-sensor prototype benchmarked against a LiDAR reference under maritime operating conditions.</p>
-    <p>The project scope covers: (1) sensor technology survey and selection; (2) single-sensor characterisation; (3) configurable multi-sensor integration and software; (4) real-time visualisation; (5) sea trials; (6) coverage and sensor-placement evaluation; and (7) benchmarking against LiDAR/camera ground truth.</p>
+    <h2>2. Objectives &amp; Scope</h2>
+    <p><strong>Research question:</strong> Can a configurable CTLRR-540 system detect and localize close-range obstacles across vessel geometries, and how do water interference and sensor placement affect performance?</p>
+    <p>Semester 1 produced the problem framing, sourced radar, conceptual interface and LiDAR/camera pilot. Semester 2 will verify radar acquisition, characterize one sensor, integrate processing and evaluate up to two radars where access permits.</p>
+  </div>
+
+  <div id="vessels">
+    <h3>2.1 Target Vessels and Operating Boundary</h3>
+    <p>Reference geometries are a target USV of approximately 1.75 m LOA (beam and mounting constraints unconfirmed) and ST Engineering's Sea Joey, a 10.5 m Ribcraft 10.5 m PRO with 3.0 m beam (ST Engineering, n.d.). They inform placement studies; neither has validated radar performance.</p>
+    <p>The proposed zone is 0–10 m; the manual lists a 0.2 m minimum, so operation below that is not claimed. Ten metres is a provisional benchmark of roughly one Sea Joey LOA. A 3 m critical-proximity threshold is provisional, not a validated warning distance. Operational distance depends on speed, response delay, manoeuvrability, obstacle class and margin. Sensor range, current range, predicted DCPA, warning and critical thresholds are distinct.</p>
+    <p>The 30 cm box used at approximately 3 m is a repeatable pilot target, not a justified minimum hazard size. Select and measure a representative buoy before claiming minimum-object capability.</p>
   </div>
 
   <div id="requirements">
-    <h3>2.1 System Requirements</h3>
-    <ul>
-      <li>Short-range obstacle detection around the vessel with a configurable safety standoff distance <em>R</em>.</li>
-      <li>Support for multiple radar sensors mounted at configurable 6-DOF poses.</li>
-      <li>Transformation of all sensor detections into a common vessel body coordinate frame.</li>
-      <li>Real-time ingestion of 4D radar point clouds containing spatial position and radial velocity.</li>
-      <li>Configurable clutter rejection and temporal confirmation parameters.</li>
-      <li>Real-time vessel-centric visualisation for operation and diagnostics.</li>
-      <li>Architecture scalable to <em>N</em> sensors; the FYP hardware prototype will validate up to two sensors due to project time and procurement constraints.</li>
-    </ul>
+    <h3>2.2 Provisional Design Specifications</h3>
+    <p>The values below are project targets or test conditions, not achieved performance. The 10 m envelope is a design benchmark; final acceptance thresholds must be agreed with the supervisor and ST Engineering before the validation campaign.</p>
+    <table style="width:100%;border-collapse:collapse"><thead><tr><th style="text-align:left">Requirement</th><th style="text-align:left">Target or measure</th><th style="text-align:left">Basis and verification</th></tr></thead><tbody>
+      <tr><td>Operating zone</td><td>0–10 m design envelope; radar manual lists 0.2 m minimum</td><td>Approx. one Sea Joey LOA; measure usable range on representative targets.</td></tr>
+      <tr><td>Angular coverage</td><td>Measure blind sectors for each configured pose; one unit has nominal ±60° azimuth</td><td>Do not infer 360° from two sensors; compare geometric prediction with measured target detections.</td></tr>
+      <tr><td>Target size</td><td>30 cm box for repeatable pilot; representative buoy size to be selected</td><td>Report observed cluster extent separately from measured object dimensions.</td></tr>
+      <tr><td>Sensor count</td><td>One radar baseline; physical integration target up to two</td><td>Scale software through configuration; verify two-node overlap and packet handling.</td></tr>
+      <tr><td>Update and latency</td><td>Vendor nominal 20 Hz (50 ms frame interval); provisional processing target under 50 ms/frame</td><td>Measure decode, processing and UI latency separately; frame interval is not end-to-end latency.</td></tr>
+    </tbody></table>
   </div>
 
   <div id="metrics">
-    <h3>2.2 Evaluation Metrics</h3>
+    <h3>2.3 Evaluation Metrics</h3>
     <ul>
-      <li><strong>Detection rate:</strong> proportion of real obstacles within the safety region that are successfully detected.</li>
-      <li><strong>False alarm rate:</strong> frequency of alarms caused by maritime clutter rather than genuine obstacles.</li>
-      <li><strong>Angular coverage:</strong> completeness of the required vessel safety envelope and identification of blind sectors.</li>
-      <li><strong>Latency:</strong> delay between an obstacle becoming detectable and a confirmed proximity alarm.</li>
-      <li><strong>Sensor-level metrics:</strong> range, angular accuracy, update rate and point-cloud characteristics.</li>
+      <li><strong>Detection recall:</strong> matched target observation windows divided by ground-truth target windows, reported by range, angle, target and condition.</li>
+      <li><strong>False-cluster rate:</strong> unmatched obstacle-like clusters per minute in a pre-defined target-free region; distinguish a physical water return from a false system alarm.</li>
+      <li><strong>Localization:</strong> signed bias and RMSE between cluster-based range/bearing and surveyed target position.</li>
+      <li><strong>Coverage:</strong> angular sectors with repeatable detections, with hull occlusion and mounting pose stated.</li>
+      <li><strong>Latency and continuity:</strong> frame processing time, target-loss intervals and reacquisition time, using synchronized timestamps where available.</li>
     </ul>
   </div>
 
@@ -155,200 +218,142 @@
 
   <div id="sensor-selection">
     <h2>3. Sensor Technology Selection</h2>
-    <p>Candidate technologies are evaluated against maritime-specific requirements including detection performance, susceptibility to clutter, field of view, update rate, weather robustness, deployability, data interface, ruggedness and cost. Candidate classes include short/medium-range mmWave FMCW radar, purpose-built marine radar and other applicable proximity sensing technologies.</p>
-    <p>The technology trade study is intended to justify the selected sensing modality and hardware rather than assuming mmWave radar is optimal from the outset.</p>
+    <p>Selection is treated as a constrained engineering trade study. The project has sourced the CTLRR-540 as a candidate for characterization; procurement does not itself prove it is the optimum maritime sensor.</p>
+    <table style="width:100%;border-collapse:collapse"><thead><tr><th style="text-align:left">Modality</th><th style="text-align:left">Relevant strength</th><th style="text-align:left">Limitation for this use</th><th style="text-align:left">Project role</th></tr></thead><tbody>
+      <tr><td>RGB camera</td><td>Low-cost scene context and visual labels</td><td>No direct metric range; visibility and illumination affect imagery (Papadopoulos et al., 2025)</td><td>Reference video and operator context.</td></tr>
+      <tr><td>LiDAR</td><td>Dense 3D geometry and direct ranging</td><td>Rain can reduce return intensity and point counts (Filgueira et al., 2017); water exposure needs controlled testing</td><td>Available reference sensor; not assumed to be perfect ground truth.</td></tr>
+      <tr><td>Thermal camera</td><td>Operates without visible illumination</td><td>Thermal contrast does not guarantee precise close-range geometry</td><td>Considered, not selected for this prototype.</td></tr>
+      <tr><td>Conventional marine radar</td><td>Established vessel-scale navigation and weather operation</td><td>Long-range navigation radar may lack close-range obstacle resolution for berthing (Papadopoulos et al., 2025)</td><td>Contextual alternative; a matched product trade study remains future work.</td></tr>
+      <tr><td>Automotive 4D mmWave</td><td>Compact point/track output with range, angles and radial velocity</td><td>Sparse detections, sea/rain clutter, limited FOV and unverified maritime mounting</td><td>Characterize CTLRR-540; compare performance rather than assume robustness.</td></tr>
+    </tbody></table>
+    <p>The choice is supported by a specific prototype question: the vendor provides 3D point and track outputs at 20 Hz, while published maritime work demonstrates both the promise of 77 GHz sensing and the difficulty of transferring automotive methods to dynamic sea clutter (Pirkani et al., 2024). The R-BAD system is an important precedent; the differentiator here is configurable deployment of this sourced unit across vessel geometries, not the general idea of radar-assisted berthing.</p>
   </div>
 
   <div id="selected-radar">
     <h3>3.1 Selected Radar: CTLRR-540 4D Imaging Radar</h3>
-    <p>The currently sourced sensor is the CTLRR-540, a 76–79 GHz FMCW 4D imaging radar. Vendor specifications state a 0.2–360 m range, up to 2048 point-cloud returns per frame, 50 ms data period, ±60° azimuth field of view, ±15° elevation field of view, 12 V operation, ≤10 W power consumption, Ethernet/CAN interfaces, and IP6K7/IP6K9K environmental protection.</p>
-    <p>For this project, the Ethernet output is required because the vendor has indicated that the full 4D point-cloud output, including elevation/Z information, is available through automotive Ethernet whereas the CAN output does not provide the required Z information. Integration therefore uses an automotive-Ethernet-to-standard-Ethernet media converter before connection to the onboard computer network.</p>
+    <p>RUDA's CTLRR-540 (6T8R) manual lists 76–79 GHz, 0.2–360 m range, 0.15 m range resolution, ±0.1 m range accuracy, up to 2048 points/frame, 20 Hz output, ±60° azimuth, ±15° pitch, 12 V, ≤10 W, 100 Mbps Ethernet/CAN and IP6K7/IP6K9K protection (RUDA Technology, n.d.). These are vendor ratings. The listed maximum range and resolution do not establish detection of small obstacles at 0–10 m in marine conditions.
+    </p>
+    <p>The manual specifies differential Ethernet pins ETH_M/ETH_P. Project vendor guidance says full 4D point data are available over Ethernet; message availability, axes, units, timestamps and PHY compatibility still require live-packet verification. A media converter and Jetson AGX Xavier are planned host equipment.</p>
   </div>
 
   <sl-divider></sl-divider>
 
   <div id="methodology">
     <h2>4. System Concept &amp; Methodology</h2>
-    <p>The system separates the sensor transport layer, radar-message decoding, point-cloud processing and vessel-level safety logic. This modular design allows recorded or synthetic data to support software development before the physical radar is integrated. Simulated data will test software behaviour and configuration logic; it will not be treated as evidence of real radar detection performance.</p>
+    <p>The proposed chain is radar Ethernet acquisition → packet/frame decoding → coordinate transformation → point clustering and temporal association → vessel-centric display/logging. This is a design and implementation plan; the CTLRR-540 has not yet produced validated maritime test results. Recorded or synthetic inputs may test software behavior but cannot establish sensor performance.</p>
   </div>
 
   <div id="detection">
     <h3>4.1 Detection and Object Characterization Pipeline</h3>
-    <p>The CTLRR-540 vendor protocol defines two relevant outputs: <code>0x11 RAW_TARGET_DATA</code>, representing post-DSP detection points before vendor tracking, and <code>0x21 TRACK_TARGET_DATA</code>, representing vendor-tracked objects. The project intends to decode both streams if they are enabled in the supplied firmware. These are processed radar outputs, not raw ADC/IQ samples. Actual message availability and decoded field meanings will be verified against live packets.</p>
-    <figure class="architecture-figure">
-      <svg viewBox="0 0 760 410" role="img" aria-labelledby="pipelineTitle pipelineDesc" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block">
-        <title id="pipelineTitle">Radar data processing pipeline</title><desc id="pipelineDesc">The received UDP data is decoded into detection points and vendor tracks. Detection points feed custom clustering and tracking; both outputs can be compared before safety assessment and visualization.</desc>
-        <defs><marker id="arrowPipe" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#526579"/></marker></defs>
-        <rect x="245" y="12" width="270" height="45" rx="8" fill="#eaf0f7" stroke="#8da1b8"/><text x="380" y="31" text-anchor="middle" font-size="14" font-weight="700" fill="#203247">UDP Receiver + Frame Decoder</text><text x="380" y="47" text-anchor="middle" font-size="11" fill="#40566d">Linux user-space application</text>
-        <path d="M380 57 V82 H190 V101 M380 82 H570 V101" fill="none" stroke="#526579" stroke-width="1.6" marker-end="url(#arrowPipe)"/>
-        <rect x="35" y="102" width="310" height="55" rx="8" fill="#e4f5ef" stroke="#72ad9b"/><text x="190" y="123" text-anchor="middle" font-size="14" font-weight="700" fill="#174e42">0x11 Detection Points</text><text x="190" y="141" text-anchor="middle" font-size="11" fill="#285e52">Range, azimuth, elevation, Doppler, quality fields</text>
-        <rect x="415" y="102" width="310" height="55" rx="8" fill="#fff2df" stroke="#d6a45f"/><text x="570" y="123" text-anchor="middle" font-size="14" font-weight="700" fill="#754710">0x21 Vendor Tracks</text><text x="570" y="141" text-anchor="middle" font-size="11" fill="#754710">Track ID, position, velocity, extent and status fields</text>
-        <path d="M190 157 V181" stroke="#526579" stroke-width="1.6" marker-end="url(#arrowPipe)"/><path d="M570 157 V181" stroke="#526579" stroke-width="1.6" marker-end="url(#arrowPipe)"/>
-        <rect x="35" y="183" width="310" height="66" rx="8" fill="#e4f5ef" stroke="#72ad9b"/><text x="190" y="204" text-anchor="middle" font-size="13" font-weight="700" fill="#174e42">Custom Point Processing</text><text x="190" y="222" text-anchor="middle" font-size="11" fill="#285e52">XYZ conversion → DBSCAN → object candidates</text><text x="190" y="237" text-anchor="middle" font-size="11" fill="#285e52">Doppler / temporal filtering ablations</text>
-        <rect x="415" y="183" width="310" height="66" rx="8" fill="#fff2df" stroke="#d6a45f"/><text x="570" y="204" text-anchor="middle" font-size="13" font-weight="700" fill="#754710">Vendor Output Baseline</text><text x="570" y="222" text-anchor="middle" font-size="11" fill="#754710">Use tracks as provided by radar</text><text x="570" y="237" text-anchor="middle" font-size="11" fill="#754710">Validate field interpretation and quality</text>
-        <path d="M190 249 V273 H380 V292 M570 249 V273 H380" fill="none" stroke="#526579" stroke-width="1.6" marker-end="url(#arrowPipe)"/>
-        <rect x="200" y="294" width="360" height="48" rx="8" fill="#eaf0f7" stroke="#8da1b8"/><text x="380" y="314" text-anchor="middle" font-size="13" font-weight="700" fill="#203247">Object-Level Safety Assessment</text><text x="380" y="331" text-anchor="middle" font-size="11" fill="#40566d">Range / bearing / track status / configurable warning zone R</text>
-        <path d="M380 342 V363" stroke="#526579" stroke-width="1.6" marker-end="url(#arrowPipe)"/><rect x="245" y="365" width="270" height="34" rx="8" fill="#203247"/><text x="380" y="386" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Vessel-Centric UI + Data Logging</text>
-      </svg>
-      <figcaption>Figure 1. Proposed software/data flow. Both the <code>0x11</code> point stream and <code>0x21</code> track stream are defined in the vendor protocol; actual output configuration and live decoding remain to be verified.</figcaption>
-    </figure>
-    <p>For point-level processing, range and angles are converted to Cartesian coordinates according to the vendor coordinate convention, after validating axes, signs, units and angle definitions. DBSCAN and radial velocity are candidate processing features, not presumed improvements. Cluster extent is reported as radar-visible extent rather than guaranteed physical object dimensions. Size is treated as one candidate feature, not an unconditional reason to reject a potentially hazardous small obstacle.</p>
-    <p>Temporal association creates persistent object identifiers and measures track continuity. The system then evaluates whether a confirmed obstacle intersects a configurable warning region <em>R</em>. Operational warning distance must ultimately be justified from vessel speed, response delay, stopping/avoidance capability and margin; it is not yet a validated safety threshold.</p>
+    <p>The vendor protocol describes <code>0x11 RAW_TARGET_DATA</code> as post-DSP detections and <code>0x21 TRACK_TARGET_DATA</code> as vendor tracks; these are not raw ADC/IQ samples. Decode both only if enabled, verify field meanings with recorded packets, and preserve the vendor output as a baseline. Convert detections to Cartesian coordinates only after validating axes, signs, units and angle conventions.</p>
+    <p>Compare a simple spatial-clustering baseline with DBSCAN, then add temporal association and radial-velocity features as ablations. For each object, report centroid-based range/bearing and observed XYZ cluster extent. Do not label sparse radar extent as physical size or discard a potentially hazardous target solely because its estimated extent is small. Warning-region logic is configurable and remains a research demonstrator, not an operational safety threshold.</p>
   </div>
 
   <div id="multisensor">
     <h3>4.2 Configurable Multi-Sensor Architecture</h3>
-    <p>Each radar is represented as a sensor node with a deployment configuration containing a unique sensor identity and a six-degree-of-freedom pose relative to the vessel body frame. A rigid-body transform maps each sensor's detections into the common vessel frame, after which the system can associate overlapping detections and tracks. The processing stack is designed for a configurable number of nodes, while the practical FYP target is integration of up to two radars.</p>
-    <p>Configurability means changing sensor count, calibrated pose, warning distance and processing parameters through configuration rather than rewriting the detection pipeline. Coverage claims will account for mounting height, pitch, hull occlusion and the difference between nominal field of view and measured detection capability. Each CTLRR-540 has a nominal ±60° horizontal FOV; two such units do not by themselves guarantee 360° coverage. Larger sensor configurations will be assessed geometrically/synthetically, while physical validation will be limited by available hardware and time.</p>
+    <p>Each node has a unique ID and calibrated six-degree-of-freedom pose relative to the vessel frame. Transform detections into that frame before associating tracks; evaluate one- and two-radar layouts for coverage, overlap, blind sectors and possible interference. A pair of ±60° sensors does not guarantee 360° coverage.</p>
+    <p>The manual recommends a 300–700 mm installation height (320–360 mm preferred), near-zero yaw/roll, a 90° pitch reference and a uniform non-metallic cover clear of conductive material in the field of view. These automotive-context recommendations are starting constraints; marine radome, hull and spray effects require assessment (RUDA Technology, n.d.).</p>
   </div>
 
   <div id="comms">
     <h3>4.3 Communications Architecture</h3>
-    <p>The proposed data path converts the radar's two-wire automotive Ethernet interface to standard RJ45 Ethernet, then connects each radar node through an Ethernet switch to the Jetson AGX Xavier. The CTLRR-540 manual identifies the differential Ethernet pins as <code>ETH_M</code> and <code>ETH_P</code> and specifies a 100 Mbps Ethernet interface. The supplied LD-100BASE-T1 converter is described by the vendor as an automotive-Ethernet-to-RJ45 physical-layer converter. Final PHY compatibility, master/slave setting and harness pinout should be confirmed against the supplied hardware.</p>
-    <figure class="architecture-figure">
-      <svg viewBox="0 0 760 360" role="img" aria-labelledby="commsTitle commsDesc" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block">
-        <title id="commsTitle">Communications architecture</title><desc id="commsDesc">Two radar nodes each connect over two-wire automotive Ethernet to a media converter. Each converter connects by RJ45 Ethernet to a Gigabit Ethernet switch, which connects to the Jetson AGX Xavier running Linux.</desc>
-        <defs><marker id="arrowNet" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#526579"/></marker></defs>
-        <rect x="18" y="25" width="172" height="48" rx="8" fill="#e4f5ef" stroke="#72ad9b"/><text x="104" y="45" text-anchor="middle" font-size="13" font-weight="700" fill="#174e42">CTLRR-540 #1</text><text x="104" y="61" text-anchor="middle" font-size="10" fill="#285e52">ETH_P / ETH_M</text>
-        <rect x="18" y="104" width="172" height="48" rx="8" fill="#e4f5ef" stroke="#72ad9b"/><text x="104" y="124" text-anchor="middle" font-size="13" font-weight="700" fill="#174e42">CTLRR-540 #2</text><text x="104" y="140" text-anchor="middle" font-size="10" fill="#285e52">Second node, if procured</text>
-        <path d="M190 49 H234 M190 128 H234" stroke="#526579" stroke-width="1.6" marker-end="url(#arrowNet)"/><text x="212" y="39" text-anchor="middle" font-size="9" fill="#40566d">100 Mbps</text><text x="212" y="118" text-anchor="middle" font-size="9" fill="#40566d">100 Mbps</text>
-        <rect x="236" y="25" width="171" height="48" rx="8" fill="#eaf0f7" stroke="#8da1b8"/><text x="321" y="45" text-anchor="middle" font-size="12" font-weight="700" fill="#203247">LD-100BASE-T1 #1</text><text x="321" y="61" text-anchor="middle" font-size="10" fill="#40566d">PHY media converter</text>
-        <rect x="236" y="104" width="171" height="48" rx="8" fill="#eaf0f7" stroke="#8da1b8"/><text x="321" y="124" text-anchor="middle" font-size="12" font-weight="700" fill="#203247">LD-100BASE-T1 #2</text><text x="321" y="140" text-anchor="middle" font-size="10" fill="#40566d">One converter per radar</text>
-        <path d="M407 49 H448 V88 H467 M407 128 H448 V103 H467" fill="none" stroke="#526579" stroke-width="1.6" marker-end="url(#arrowNet)"/><text x="446" y="30" text-anchor="middle" font-size="10" fill="#40566d">RJ45 / Cat5e or Cat6</text>
-        <rect x="469" y="65" width="132" height="62" rx="8" fill="#eaf0f7" stroke="#8da1b8"/><text x="535" y="89" text-anchor="middle" font-size="13" font-weight="700" fill="#203247">Ethernet</text><text x="535" y="105" text-anchor="middle" font-size="13" font-weight="700" fill="#203247">Switch</text><text x="535" y="118" text-anchor="middle" font-size="9" fill="#40566d">Gigabit recommended</text>
-        <path d="M601 96 H630" stroke="#526579" stroke-width="1.6" marker-end="url(#arrowNet)"/><text x="615" y="84" text-anchor="middle" font-size="9" fill="#40566d">RJ45</text>
-        <rect x="632" y="55" width="115" height="82" rx="8" fill="#203247"/><text x="689" y="77" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Jetson AGX</text><text x="689" y="93" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Xavier</text><text x="689" y="111" text-anchor="middle" font-size="10" fill="#dbe7f3">Linux NIC</text><text x="689" y="124" text-anchor="middle" font-size="9" fill="#dbe7f3">ROS 2 host</text>
-        <path d="M689 137 V178" stroke="#526579" stroke-width="1.6" marker-end="url(#arrowNet)"/><rect x="497" y="180" width="250" height="46" rx="8" fill="#fff2df" stroke="#d6a45f"/><text x="622" y="199" text-anchor="middle" font-size="12" font-weight="700" fill="#754710">Linux UDP Receiver</text><text x="622" y="214" text-anchor="middle" font-size="10" fill="#754710">Protocol decoder + frame assembly</text>
-        <path d="M622 226 V247" stroke="#526579" stroke-width="1.6" marker-end="url(#arrowNet)"/><rect x="497" y="249" width="250" height="47" rx="8" fill="#e4f5ef" stroke="#72ad9b"/><text x="622" y="268" text-anchor="middle" font-size="12" font-weight="700" fill="#174e42">Point / Track Topics</text><text x="622" y="283" text-anchor="middle" font-size="10" fill="#285e52">0x11 detection points and 0x21 tracks</text>
-        <text x="18" y="201" font-size="11" font-weight="700" fill="#203247">Vendor-provided example</text><text x="18" y="220" font-size="11" fill="#40566d">UDP socket receiver uses</text><text x="18" y="236" font-size="11" fill="#40566d">port 51277 and multicast</text><text x="18" y="252" font-size="11" fill="#40566d">group 224.0.2.6.</text><text x="18" y="279" font-size="10" fill="#8b5e24">Verify against live configuration;</text><text x="18" y="293" font-size="10" fill="#8b5e24">these are example-code settings,</text><text x="18" y="307" font-size="10" fill="#8b5e24">not yet confirmed on delivered radar.</text>
-        <text x="380" y="338" text-anchor="middle" font-size="10" fill="#40566d">Topology is proposed; live packet delivery, unique IPs, multicast and dual-radar operation require bench validation.</text>
-      </svg>
-      <figcaption>Figure 2. Proposed communications path from radar PHY to the host-side decoder.</figcaption>
-    </figure>
-    <p>The vendor supplied a Python UDP receiver and a protocol matrix defining <code>0x11 RAW_TARGET_DATA</code> (post-DSP detection points) and <code>0x21 TRACK_TARGET_DATA</code> (tracked objects). The intended implementation reuses a standard Linux Ethernet NIC and socket stack, then develops a user-space packet decoder and frame assembler; a custom Linux kernel Ethernet driver is not expected for this standard RJ45 link.</p>
-    <p>The example receiver uses UDP port <code>51277</code> and multicast group <code>224.0.2.6</code>. These settings must be checked against the radar's actual configuration and packets. Two radars should have unique network identities where possible; identical factory IPs cannot be assumed to work on the same ordinary LAN merely by assigning multiple IP addresses to the host. Timestamp semantics, packet loss handling, point-field units/axis conventions, and simultaneous stream output will be validated during integration.</p>
+    <p>The proposed path is radar 100 Mbps automotive Ethernet → compatible PHY converter → Ethernet switch → Jetson AGX Xavier Linux receiver. The supplied Python example uses UDP port 51277 and multicast group 224.0.2.6; treat these as example settings until confirmed on the delivered radar. Verify packet loss, stream selection, unique network identities, timestamp semantics and simultaneous two-radar operation before integration claims.</p>
   </div>
 
   <div id="power">
     <h3>4.4 Power Architecture and Near-Term Test Setup</h3>
-    <p>Initial sensor testing requires DC power for the CTLRR-540 radar (12 V, at most 10 W), its Ethernet converter (9–36 V DC or 5 V USB), and the Livox LiDAR according to its own model-specific rating. The Jetson AGX Xavier supply depends on the exact carrier board. A future dual-radar installation would also require a second converter and an Ethernet switch, whose supply requirements remain to be verified.</p>
-    <p>Bench power supplies and exposed temporary wiring are inconvenient near the water-spray apparatus and introduce electrical safety concerns. Following discussion with ST Engineering, the near-term plan is to use an EcoFlow portable power station with correctly rated DC adapters and terminated cables, keeping the station and unsealed connections outside the wet-test area. The LiDAR power connector, polarity, allowable voltage range and current demand must be checked before fabricating a cable or energizing the unit. Bare power and ground leads must not be connected directly to AC outlets.</p>
-    <p>A custom autonomous, default-on six-channel distribution PCB (Jetson, two radars, two converters and one spare output) remains a possible future USV-integration option, not an immediate test prerequisite. If pursued, the design would use independent protected branches, appropriate regulation, and no onboard switching MCU. Mechanical layout, the vessel DC bus, Jetson carrier-board requirements and any Ethernet-switch supply must be confirmed with ST before fabrication.</p>
+    <p>Bench testing requires a correctly rated 12 V supply for each radar, compatible converter and Jetson supplies, and safe separation of power equipment from the wet-test area. Exact converter, LiDAR and Jetson carrier-board requirements must be checked against the supplied hardware. A custom vessel power-distribution PCB is a possible later integration item, not a Semester 1 achievement.</p>
   </div>
 
   <div id="ui">
-  <h3>4.5 Vessel-Centric 3D Visualisation</h3>
-
-  <p>
-    An interactive 3D simulation was developed to demonstrate
-    the proposed vessel-centric proximity monitoring interface.
-    The simulation supports waypoint navigation, configurable
-    radar installation, sensor coverage visualisation, obstacle
-    proximity warnings and automatic speed assistance.
-  </p>
-
-  <iframe
-    src="./simulations/maritime_proximity_ui_3d_v07.html"
-    title="Interactive Maritime Proximity Simulation"
-    width="100%"
-    height="850"
-    style="border: 1px solid #d7e0e8; border-radius: 12px;"
-    loading="lazy"
-    allowfullscreen>
-  </iframe>
-
-  <p>
-    <small>
-      Note: This simulation uses synthetic vessel and obstacle
-      data. It is a conceptual interface prototype, not a
-      validated radar perception or autonomous navigation system.
-    </small>
-  </p>
- </div>
+  <h3>4.5 Visualisation Prototype</h3>
+  <p>The 3D v07 simulation is the current interface prototype. It demonstrates vessel-centric layout, configurable sensor poses and coverage display, obstacle markers and warning-zone concepts using synthetic inputs. It does not consume radar packets, estimate real obstacle size, or control vessel speed. User-interface feasibility is demonstrated; sensing and warning performance are not.</p>
+  <iframe src="./simulations/maritime_proximity_ui_3d_v07.html" title="Conceptual maritime proximity interface simulation" width="100%" height="700" style="border:1px solid #d7e0e8;border-radius:12px" loading="lazy" allowfullscreen></iframe>
+  <p><small>Figure 3. Concept interface only; all vessel and obstacle data are synthetic.</small></p>
+  </div>
 
   <sl-divider></sl-divider>
 
   <div id="comparative_dev">
-    <h2>5. Sensor Comparative Development &amp; Validation</h2>
-    <p>Initial controlled recordings have been completed using the Livox LiDAR and a camera to examine how water exposure affects observation of a stationary cardboard-box target. The purpose of this pilot is to establish observable failure modes and develop an analysis workflow; it is not yet a quantitative comparison of LiDAR and mmWave radar performance.</p>
-    <h3>5.1 Completed Water-Interference Recordings</h3>
-    <p>The setup used a stationary cardboard box approximately 3 m from the sensors, with water introduced either directly onto the sensor or into the line of sight (LOS) between the sensor and target. The water delivery was short-duration and manually replenished; the available stream lasted up to approximately five seconds per fill. Exact trial timing and camera/LiDAR synchronization have not yet been established from the recordings.</p>
-    <table style="width:100%;border-collapse:collapse"><thead><tr><th style="text-align:left">Sensor</th><th style="text-align:left">Condition</th><th>Recorded runs</th></tr></thead><tbody>
-    <tr><td>LiDAR</td><td>Dry baseline</td><td>1</td></tr>
-    <tr><td>LiDAR</td><td>Water poured onto sensor</td><td>1</td></tr>
-    <tr><td>LiDAR</td><td>Water poured across target LOS</td><td>2</td></tr>
-    <tr><td>Camera</td><td>Water poured across target LOS</td><td>1</td></tr>
-    <tr><td>Camera</td><td>Water poured onto sensor</td><td>1</td></tr>
+    <h2>5. Prototypes, Tests and Initial Evidence</h2>
+    <p>Three artifacts support the work to date: (1) a 3D synthetic-data interface prototype for evaluating the operator view; (2) a tripod, cardboard-box and water-spray setup for pilot sensor recordings; and (3) a proposed modular radar data pipeline and communications design. Only the first two have been exercised with recorded inputs. The physical mmWave radar pipeline remains unintegrated, so no radar detection result is claimed.</p>
+    <h3>5.1 LiDAR/Camera Water-Interference Pilot</h3>
+    <p>A stationary 30 cm box was placed about 3 m from the sensors. Water was applied directly to a sensor or across its line of sight using a manually operated spray bottle; trials lasted a few seconds. Six runs were recorded: four LiDAR and two camera. Conditions were not balanced across sensors, water delivery was not measured, and precise camera/LiDAR synchronization and trial timing are unavailable. Treat this as setup and failure-mode exploration, not a comparative performance experiment.</p>
+    <table style="width:100%;border-collapse:collapse"><thead><tr><th>Sensor</th><th>Dry</th><th>Direct wetting</th><th>Water across LOS</th><th>Total</th></tr></thead><tbody>
+      <tr><td>LiDAR</td><td>1</td><td>1</td><td>2</td><td>4</td></tr><tr><td>Camera</td><td>0</td><td>1</td><td>1</td><td>2</td></tr>
     </tbody></table>
-    <p>Six runs were recorded in total: four LiDAR runs and two camera runs. The baseline point-cloud visualization contains a yellow return cluster identified as the cardboard-box target. During an LOS water-interference recording, the target returns appeared temporarily reduced, missing or displaced; additional transient returns were also observed. These observations are preliminary and have not yet been attributed conclusively to particular physical scattering mechanisms.</p>
-    <h3>5.1.1 Comparative Experiment Setup</h3>
-    The LiDAR and camera were mounted on a tripod at approximately 1.5 m height, with the cardboard box target placed 3 m away. Water was introduced either directly onto the sensor or across the line of sight to the target. The water source was a manually operated spray bottle, and each run lasted for a few seconds. The environment was controlled to minimize external factors.
-    
-    <image-component 
-    tag="comparative_dev" 
-    source="assets/comparative_experiment_setup.JPEG"
-    subtitle="Experiment setup showing LiDAR, camera, and cardboard box target"
-></image-component>
-
-
-    <h3>5.1.2 Experiment Videos</h3>
-    <div class="experiment-videos">
-      <!-- Replace VIDEO_ID with the actual YouTube video ID; remove placeholders before public release. -->
-      <video-component tag="lidar-baseline" source="https://www.youtube.com/embed/3joBU_QBYWQ" subtitle="LiDAR — dry baseline (run 1)"></video-component>
-      <video-component tag="lidar-on-1" source="https://www.youtube.com/embed/mfyfo1Su1-Y" subtitle="LiDAR — water poured onto sensor (run 1)"></video-component>
-      <video-component tag="lidar-los-1" source="https://www.youtube.com/embed/vYu8FhtJpBg" subtitle="LiDAR — water across line of sight (run 1)"></video-component>
-      <video-component tag="lidar-los-2" source="https://www.youtube.com/embed/tYF59p7kpJk" subtitle="LiDAR — water across line of sight (run 2)"></video-component>
-      <video-component tag="camera-los-1" source="https://www.youtube.com/embed/C4P5yvuL3So" subtitle="Camera — water across line of sight (run 1)"></video-component>
-      <video-component tag="camera-on-1" source="https://www.youtube.com/embed/hl2rhphezjg" subtitle="Camera — water poured onto sensor (run 1)"></video-component>
-    </div>
-  </div>
-
-  <div id="results">
-    <h3>5.2 Preliminary Observations and Planned Cluster-Based Analysis</h3>
-    <p><strong>Qualitative observation:</strong> The LiDAR visualization suggests intermittent loss or distortion of the stationary box returns when water passes across the optical path. Additional returns may originate from droplets or other scene elements. A measured droplet return is not itself a false measurement; a false obstacle alarm would occur only if the downstream detection system incorrectly treats it as a hazardous obstacle.</p>
-    <p><strong>Analysis approach:</strong> Rather than using raw point counts inside a manually selected target ROI as the primary detection measure, the recorded point clouds will be processed using a reproducible clustering pipeline. Candidate stages are spatial filtering, removal of known static surfaces, Euclidean or DBSCAN clustering, cluster-level association with the measured box position, and temporal tracking. The same fixed pipeline and parameters will be applied across baseline and water-interference recordings, with sensitivity checks where appropriate.</p>
-    <ul>
-      <li><strong>Cluster-level target availability:</strong> Fraction of observation windows in which a cluster meeting predeclared spatial and quality criteria is associated with the box.</li>
-      <li><strong>Target loss and reacquisition:</strong> Consecutive intervals without a matched target cluster and time to stable reacquisition after water stops.</li>
-      <li><strong>Cluster geometry stability:</strong> Changes in estimated centroid, visible extent and fragmentation relative to baseline.</li>
-      <li><strong>Spurious cluster rate:</strong> Unmatched transient clusters in relevant empty-space regions, with video-assisted interpretation where possible.</li>
-    </ul>
-    <p>No clustering algorithm has yet been run on these recordings, and no numerical detection-rate or false-alarm claims are made at this stage. Ground-truth timing, coordinate-frame interpretation, repeatability and possible confounding background objects remain to be checked.</p>
+    <figure class="architecture-figure"><image-component tag="comparative_dev" source="assets/comparative_experiment_setup_labelled.png" subtitle="Pilot setup: LiDAR, camera, tripod and cardboard target"></image-component><figcaption>Figure 4. Pilot setup; the image documents arrangement, not calibrated geometry.</figcaption></figure>
+    <h3 id="results">5.2 Observations and Analysis</h3>
+    <p>In the available LiDAR visualization, box returns appeared reduced, missing or displaced during one water-across-LOS recording, with additional transient returns. Camera footage showed temporary loss of visual target distinction in water-interference trials. With few unbalanced runs and no verified synchronization, these are qualitative observations only; they do not establish an effect size, sensor ranking or radar advantage.</p>
+    <p>For follow-up analysis, freeze spatial filters and clustering parameters before comparing conditions. Associate a cluster to the surveyed target using a predeclared spatial gate; calculate target availability by observation window, longest loss interval, reacquisition time, centroid/range error, cluster-extent variation and unmatched clusters per minute. Review video alongside sensor data. Report every run and descriptive intervals; do not infer statistical significance from the present pilot.</p>
   </div>
 
   <div id="simulation">
     <h3>5.3 Supporting Software Development</h3>
-    <p>In parallel, the planned Linux/ROS 2 architecture will accept replayed or synthetic point-cloud data through a common interface. This supports early development of detection, object-level output and visualization without treating synthetic data as experimental evidence of radar performance. The CTLRR-540 Ethernet protocol defines detection-point and vendor-track streams; their physical integration and measured performance remain subjects of Semester 2 validation.</p>
+    <p>The planned Linux/ROS 2 interface will accept live or replayed frames through one message schema. First milestones are packet logging and decoder validation; synthetic data are for interface and configuration tests only.</p>
   </div>
 
   <div id="hypotheses">
-    <h3>5.4 Hypotheses for Experimental Evaluation</h3>
+    <h3>5.4 Testable Hypotheses</h3>
     <ul>
-      <li><strong>H1:</strong> Temporal persistence filtering reduces false alarms from transient clutter, with a corresponding increase in detection latency as <em>K</em> increases.</li>
-      <li><strong>H2:</strong> Incorporating radial velocity into the processing pipeline can improve discrimination between genuine obstacles and maritime clutter compared with spatial information alone.</li>
-      <li><strong>H3:</strong> Minimum physical-size filtering can reduce false alarms without materially degrading detection of objects satisfying the operational minimum threat-size criterion.</li>
-      <li><strong>H4:</strong> Configurable multi-radar placement can achieve the required angular coverage while managing overlap, blind sectors, cost and potential inter-radar interference.</li>
+      <li><strong>H1:</strong> Temporal persistence reduces transient false clusters but increases target confirmation delay.</li>
+      <li><strong>H2:</strong> Radial-velocity features change target/clutter discrimination relative to spatial clustering alone.</li>
+      <li><strong>H3:</strong> Radar cluster extent is an imperfect proxy for physical size; its bias and repeatability vary with range, aspect and target material.</li>
+      <li><strong>H4:</strong> Calibrated two-radar placement improves measured coverage over a single node, with trade-offs in overlap and integration complexity.</li>
     </ul>
+    <p>All four are hypotheses; no result is asserted before radar data are collected.</p>
   </div>
 
   <sl-divider></sl-divider>
 
   <div id="validation">
-    <h2>6. Experimental Validation Plan</h2>
-    <p>Following delivery and integration of the CTLRR-540, controlled single-radar tests will characterise range, angular performance, point-cloud density, update rate, data interface behaviour and the contribution of Doppler information. The radar is intended subsequently to be deployed on the NUS Bumblebee Autonomous Systems BlueBoat platform. Existing LiDAR and camera sensing will provide reference information for evaluating detection rate, false alarm rate, latency and angular coverage under maritime conditions.</p>
-    <p>Two-radar testing will then evaluate coordinate-frame fusion, overlap handling, placement trade-offs and any practical effects of simultaneous radar operation. The final system will be benchmarked against the LiDAR reference with particular emphasis on false alarms caused by maritime clutter.</p>
+    <h2>6. Validation Protocol and Known Shortcomings</h2>
+    <p>The current evidence has four material gaps: no live CTLRR-540 data; unequal, unreplicated LiDAR/camera conditions; unmeasured water delivery and imperfect time alignment; and no agreed buoy size or operational warning distance. These prevent claims about radar robustness, comparative accuracy, minimum object size or safe alarm thresholds.</p>
+    <h3 id="validation-matrix">6.1 Planned Test Matrix</h3>
+    <table style="width:100%;border-collapse:collapse"><thead><tr><th>Stage</th><th>Conditions and specimens</th><th>Protocol / output</th><th>Decision gate</th></tr></thead><tbody>
+      <tr><td>1. Radar bring-up</td><td>One CTLRR-540; static 30 cm box</td><td>Log raw packets and both available message types; verify units, axes, frame rate, packet loss and timestamps</td><td>Do not start performance testing until decoder fields and recording are repeatable.</td></tr>
+      <tr><td>2. Range/angle baseline</td><td>Box at 1, 3, 5 and 10 m; azimuth 0° and ±30°; five repeats per cell</td><td>Survey target pose; use fixed radar settings; record point and track streams plus synchronized video</td><td>Report detection and localization by cell; revise range claims if results do not support 10 m.</td></tr>
+      <tr><td>3. Water interference</td><td>Dry, water across LOS, direct sensor-window wetting; five repeats per condition</td><td>Fix target at 3 m; measure applied water volume/rate and duration; randomize condition order where practical; log radar/LiDAR/video concurrently</td><td>Only claim condition effects if capture timing and water exposure are documented.</td></tr>
+      <tr><td>4. Two-radar integration</td><td>Single-node baseline vs two nodes at calibrated poses; overlap and blind-sector targets</td><td>Repeat matched target placements; log each node independently and in fused vessel frame</td><td>Compare coverage, duplicates, packet loss and processing latency; do not infer 360° from FOV geometry alone.</td></tr>
+    </tbody></table>
+    <p>Five repeats are a proposed minimum screening protocol, not a claim of statistical power. After the box baseline, select and dimension a buoy with the project partner and repeat the relevant range/angle cells. Use identical algorithm parameters across conditions, preserve raw logs, and state exclusions before analysis. Compare distance/angle estimates to surveyed truth and distinguish per-frame processing from end-to-end UI delay.</p>
+    <h3 id="actions">6.2 Corrective Actions and Contingencies</h3>
+    <ul>
+      <li><strong>Radar delivery or interface delay:</strong> request vendor packet/configuration support now; validate the decoder with recorded packets if available, but label replay as software-only evidence. Shift physical claims to the tests actually completed.</li>
+      <li><strong>Time synchronization:</strong> record monotonic host timestamps at packet receipt and video timestamps; measure offset/drift before using camera as ground truth.</li>
+      <li><strong>Water repeatability:</strong> quantify volume and application duration, fix target/range, randomize order and repeat each condition; call this spray/wetting, not wave simulation.</li>
+      <li><strong>Vessel access:</strong> prioritize a controlled bench/range matrix; treat Sea Joey trials as conditional on permission and schedule, with the small USV geometry retained for placement analysis.</li>
+      <li><strong>Size/threshold uncertainty:</strong> agree target classes and warning logic with ST Engineering before final evaluation; report cluster extent and provisional thresholds separately from physical size and safe operating distances.</li>
+    </ul>
+  </div>
+
+  <sl-divider></sl-divider>
+
+  <div id="timeline">
+    <h2>7. Project Plan and Milestones</h2>
+    <p>Interim work completed: problem framing, radar sourcing, conceptual 3D interface and six LiDAR/camera pilot runs. Remaining work depends on radar access and confirmed vessel constraints.</p>
+    <ol class="project-timeline">
+      <li><strong>Nov–Dec 2026 — radar bring-up:</strong> verify power, Ethernet/UDP, message fields and repeatable packet logging.</li>
+      <li><strong>Jan 2027 — single radar:</strong> complete range/angle tests and report detection, localization and update behavior.</li>
+      <li><strong>Feb 2027 — software:</strong> integrate clustering, tracking, configuration and UI; measure processing against the 50 ms frame interval.</li>
+      <li><strong>Mar 2027 — two radars:</strong> calibrate poses and measure overlap, blind sectors and coverage against the single-node baseline.</li>
+      <li><strong>Apr–May 2027 — validation/report:</strong> complete repeatable water and target trials, benchmark against synchronized references where available, and submit to the official schedule.</li>
+    </ol>
+    <p><strong>Schedule risks:</strong> hardware delivery, vendor stream access and vessel permission can compress testing. If a gate slips, preserve raw-data and protocol evidence, prioritize single-radar bench characterization, and remove unsupported performance claims rather than substituting simulation for measurement.</p>
   </div>
 
   <sl-divider></sl-divider>
 
   <div id="references" class="references">
-    <sl-divider></sl-divider>
-    <h2>References</h2>
-    <ul>
-      <li>[To be populated] Peer-reviewed literature on maritime perception, mmWave/FMCW radar, radar clutter mitigation, multi-radar fusion and autonomous-vehicle radar processing.</li>
-      <li>[To be populated] CTLRR-540 vendor datasheet / technical documentation.</li>
-      <li>[To be populated] ST Engineering operational requirements and project context, where permitted for academic documentation.</li>
-    </ul>
+    <h2>8. References</h2>
+    <ol>
+      <li>Filgueira, A., González-Jorge, H., Lagüela, S., Díaz-Vilariño, L., &amp; Arias, P. (2017). Quantifying the influence of rain in LiDAR performance. <em>Measurement, 95</em>, 143–148. <a href="https://doi.org/10.1016/j.measurement.2016.10.009">https://doi.org/10.1016/j.measurement.2016.10.009</a>.</li>
+      <li>Gourova, R., Krasnov, O., &amp; Yarovoy, A. (2017). Analysis of rain clutter detections in commercial 77 GHz automotive radar. In <em>2017 European Radar Conference (EURAD)</em>. <a href="https://doi.org/10.23919/EURAD.2017.8249138">https://doi.org/10.23919/EURAD.2017.8249138</a>.</li>
+      <li>Papadopoulos, F. G., Michalopoulos, A.-P., Paliodimos, E. N., Christopoulos, I. K., Patrikakis, C. Z., Simopoulos, A., &amp; Mytilinaios, S. A. (2025). A comprehensive radar-based berthing-aid dataset (R-BAD) and onboard system for safe vessel docking. <em>Electronics, 14</em>(20), 4065. <a href="https://doi.org/10.3390/electronics14204065">https://doi.org/10.3390/electronics14204065</a>.</li>
+      <li>Pirkani, A., Stove, A., Kumar, D., Cherniakov, M., &amp; Gashinova, M. (2024). 77 GHz FMCW imaging radar for low observable and small marine target detection in dynamic sea conditions based on combined MIMO and DBS. <em>IEEE Transactions on Radar Systems, 2</em>, 517–534. <a href="https://doi.org/10.1109/TRS.2024.3400694">https://doi.org/10.1109/TRS.2024.3400694</a>.</li>
+      <li>RUDA Technology. (n.d.). <em>CTLRR-540 (6T8R) 4D imaging radar: Product manual.</em> Manufacturer manual supplied for this project. See the <a href="https://www.mwradar.com/dom/down_list.php?channel_id=21762551&amp;username=ruda888">RUDA support/downloads page</a>.</li>
+      <li>ST Engineering. (n.d.). <em>Sea Joey / Ribcraft 10.5 m PRO sea acceptance trial report.</em> Manufacturer report supplied for this project.</li>
+    </ol>
   </div>
 </div>
 
