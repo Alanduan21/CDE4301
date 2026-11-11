@@ -1,18 +1,110 @@
 html,
 body {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
   font-size: 18px;
   font-family: var(--sl-font-sans);
+  color: #203040;
+  background: #f5f7fa;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
 }
 
 .content {
-  max-width: 800px;
-  margin: auto;
-  padding: 10%;
+  width: min(100% - 40px, 1040px);
+  margin: 32px auto;
+  padding: 44px 52px;
+  background: #fff;
+  border: 1px solid #d8e0e8;
+  border-radius: 12px;
+  box-shadow: 0 8px 28px rgb(25 45 65 / 7%);
 }
 
 p {
-  text-align: justify;
-  font-size: 1.1rem;
+  margin: 0 0 1rem;
+  text-align: left;
+  font-size: 1rem;
+  line-height: 1.65;
+  max-width: none;
+}
+
+figure {
+  width: 100%;
+  margin: 1.25rem 0 1.5rem;
+}
+
+figcaption {
+  margin-top: .65rem;
+  color: #526579;
+  font-size: .92rem;
+  line-height: 1.5;
+  text-align: left;
+}
+
+table {
+  width: 100%;
+  margin: 1rem 0 1.5rem;
+  border-collapse: collapse;
+  border: 1px solid #aebdca;
+  font-size: .93rem;
+  line-height: 1.5;
+}
+
+th,
+td {
+  padding: .65rem .75rem;
+  border: 1px solid #c4d0db;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background: #edf3f7;
+  color: #203b52;
+  font-weight: 700;
+}
+
+tbody tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+.gridjs-wrapper,
+.gridjs-container {
+  border: 1px solid #aebdca !important;
+  box-shadow: none !important;
+}
+
+.gridjs-table {
+  border-collapse: collapse !important;
+}
+
+.gridjs-th,
+.gridjs-td {
+  border: 1px solid #c4d0db !important;
+}
+
+@media (max-width: 700px) {
+  .content {
+    width: 100%;
+    margin: 0;
+    padding: 24px 18px;
+    border: 0;
+    border-radius: 0;
+  }
+
+  html,
+  body {
+    font-size: 16px;
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: normal;
+  }
 }

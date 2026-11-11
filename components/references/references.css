@@ -7,7 +7,25 @@
   list-style-type: none;
 }
 
+.references ol {
+  padding: 0;
+  list-style: none;
+}
+
 .references li {
-  margin: 24px 0;
+  margin: 16px 0;
   word-wrap: break-word;
+}
+
+.references ol li {
+  position: relative;
+  padding-left: 3rem;
+}
+
+.reference-number {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-weight: 700;
+  color: #203b52;
 }

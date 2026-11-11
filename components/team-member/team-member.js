@@ -26,16 +26,18 @@ class TeamMember extends HTMLElement {
     <style>
       :host {
         display: block;
-        max-width: 120px;
+        max-width: 180px;
         text-align: center;
       }
 
       img {
-        width: 100px;
-        height: 100px;
+        width: 152px;
+        height: 152px;
         border-radius: 50%;
         display: block;
         margin: auto;
+        object-fit: cover;
+        object-position: center 35%;
       }
 
       p {
@@ -45,7 +47,8 @@ class TeamMember extends HTMLElement {
 
       @media (max-width: 599px) {
         img {
-          display: none;
+          width: 132px;
+          height: 132px;
         }
       }
     </style>
