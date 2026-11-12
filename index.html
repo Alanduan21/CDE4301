@@ -24,6 +24,10 @@
     .architecture-figure figcaption { margin-top: .75rem; color: #526579; font-size: .9rem; line-height: 1.45; }
     .architecture-figure svg { min-width: 620px; }
     .architecture-figure text { font-family: Arial, Helvetica, sans-serif; }
+    .radar-progress-figures { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin: 1rem 0 1.5rem; }
+    .radar-progress-figures .architecture-figure { min-width: 0; margin: 0; }
+    .radar-progress-figures img { display: block; width: 100%; height: auto; border: 1px solid #d7e0e8; border-radius: 8px; }
+    @media (max-width: 768px) { .radar-progress-figures { grid-template-columns: 1fr; } }
     #comms p, #power p, #methodology p, #detection p, #multisensor p { line-height: 1.65; }
     #comms code, #detection code { background: #eef2f6; padding: .1rem .3rem; border-radius: 4px; }
 
@@ -147,8 +151,7 @@
       </sl-tree-item>
       <sl-tree-item expanded><a href="#validation">6. Validation Protocol and Shortcomings</a>
         <sl-tree-item><a href="#validation-matrix">6.1 Planned Test Matrix</a></sl-tree-item>
-        <sl-tree-item><a href="#actions">6.2 Corrective Actions and Contingencies</a></sl-tree-item>
-        <sl-tree-item><a href="#completion-criteria">6.3 Evidence and Completion Criteria</a></sl-tree-item>
+        <sl-tree-item><a href="#actions">6.2 Risk Controls and Completion Evidence</a></sl-tree-item>
       </sl-tree-item>
       <sl-tree-item><a href="#timeline">7. Project Timeline</a></sl-tree-item>
       <sl-tree-item><a href="#references">8. References</a></sl-tree-item>
@@ -383,9 +386,9 @@
       Report position and cluster extent; do not treat sparse extent as physical size.
       Warning zones remain configurable research logic, not operational safety thresholds.</p>
     <figure class="architecture-figure">
-      <svg viewBox="0 0 760 610" role="img" aria-labelledby="swTitle swDesc" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block">
+      <svg viewBox="0 0 760 500" role="img" aria-labelledby="swTitle swDesc" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block">
         <title id="swTitle">Live radar detection decoding architecture</title>
-        <desc id="swDesc">A live UDP receiver reconstructs radar frames, decodes vendor detection points and converts range and angles into XYZ coordinates. Live output feeds a three-view viewer and CSV logger. The separate DBSCAN script reads logged points to estimate clusters and observed spatial extent. Unified object visualization remains planned.</desc>
+        <desc id="swDesc">A live UDP receiver reconstructs radar frames, decodes vendor detection points and converts range and angles into XYZ coordinates. Live output feeds a three-view viewer and CSV logger. Clustering, tracking, object estimates and vessel-centric integration remain planned.</desc>
         <defs><marker id="swArrow" markerWidth="8" height="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#526579"/></marker><marker id="swPlanArrow" markerWidth="8" height="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#b98236"/></marker></defs>
         <rect x="180" y="12" width="400" height="54" rx="9" fill="#eaf0f7" stroke="#8da1b8"/>
         <text x="380" y="33" text-anchor="middle" font-size="14" font-weight="700" fill="#203247">UDP Multicast Receiver</text>
@@ -409,21 +412,15 @@
         <text x="570" y="300" text-anchor="middle" font-size="14" font-weight="700" fill="#203247">Decoded Point-Data CSV</text>
         <text x="570" y="318" text-anchor="middle" font-size="11" fill="#40566d">Frame ID · host time · XYZ · velocity · frame-valid flag</text>
         <text x="570" y="335" text-anchor="middle" font-size="11" fill="#40566d">Provisional frames retained with validity=0</text>
-        <path d="M570 347 V371" fill="none" stroke="#b98236" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#swPlanArrow)"/>
-        <rect x="405" y="373" width="330" height="68" rx="9" fill="#fff2df" stroke="#d6a45f" stroke-dasharray="5 3"/>
-        <text x="570" y="395" text-anchor="middle" font-size="14" font-weight="700" fill="#754710">Frame-Wise DBSCAN</text>
-        <text x="570" y="413" text-anchor="middle" font-size="11" fill="#754710">Reads logged points · clusters each frame separately</text>
-        <text x="570" y="430" text-anchor="middle" font-size="11" fill="#754710">Separate analysis script; not live-integrated</text>
-        <path d="M570 441 V464" fill="none" stroke="#b98236" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#swPlanArrow)"/>
-        <rect x="405" y="466" width="330" height="57" rx="9" fill="#fff2df" stroke="#d6a45f" stroke-dasharray="5 3"/>
-        <text x="570" y="488" text-anchor="middle" font-size="13" font-weight="700" fill="#754710">Cluster Summaries</text>
-        <text x="570" y="507" text-anchor="middle" font-size="11" fill="#754710">Centroid · distance · observed point extent</text>
-        <path d="M190 347 V548 H270 M570 523 V548 H490" fill="none" stroke="#b98236" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#swPlanArrow)"/>
-        <rect x="205" y="550" width="350" height="45" rx="9" fill="#fff2df" stroke="#d6a45f" stroke-dasharray="5 3"/>
-        <text x="380" y="568" text-anchor="middle" font-size="13" font-weight="700" fill="#754710">Future Integrated Vessel-Centric UI</text>
-        <text x="380" y="585" text-anchor="middle" font-size="10" fill="#754710">Planned: connect live points, clusters, calibration and operator display</text>
+        <path d="M190 347 V383 H260 V400 M570 347 V383 H500 V400" fill="none" stroke="#b98236" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#swPlanArrow)"/>
+        <rect x="120" y="402" width="520" height="50" rx="9" fill="#fff2df" stroke="#d6a45f" stroke-dasharray="5 3"/>
+        <text x="380" y="423" text-anchor="middle" font-size="13" font-weight="700" fill="#754710">Planned: Clustering, Tracking and Object Estimates</text>
+        <text x="380" y="440" text-anchor="middle" font-size="10" fill="#754710">No DBSCAN or object-level processing in the current live visualizer</text>
+        <path d="M380 452 V468" fill="none" stroke="#b98236" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#swPlanArrow)"/>
+        <rect x="205" y="470" width="350" height="28" rx="9" fill="#fff2df" stroke="#d6a45f" stroke-dasharray="5 3"/>
+        <text x="380" y="489" text-anchor="middle" font-size="12" font-weight="700" fill="#754710">Future Vessel-Centric UI</text>
       </svg>
-      <figcaption>Figure 2. Software architecture for the implemented live point viewer and CSV logger with DBSCAN analysis and planned unified interface.</figcaption>
+      <figcaption>Figure 2. Live point viewer and planned object processing.</figcaption>
     </figure>
   </div>
 
@@ -683,9 +680,53 @@
         <tr><td>Frame assembly</td><td>Processes 0x10 frame headers, 0x11 point packets and 0x1F frame tails; checks declared point and packet counts.</td><td>Some frames have matching counts but mismatched header/tail frame IDs. They are flagged provisional (frame_valid=0); tail-ID semantics require vendor confirmation.</td></tr>
         <tr><td>Point decoding and coordinates</td><td>Reads 72-byte records and reconstructs XYZ from range, azimuth and elevation, interpreting angles as radians.</td><td>Coordinate axes and scale still require comparison with surveyed targets before reporting localization accuracy.</td></tr>
         <tr><td>Live visualization and logging</td><td>Displays XY, YZ and XZ views with 250 ms accumulation and writes decoded detections to CSV.</td><td>Provides diagnostic evidence of a live stream; it is not an object tracker or a vessel-centric warning display.</td></tr>
-        <tr><td>Object estimation</td><td>A separate frame-wise DBSCAN script can analyze exported point data live.</td><td>Clustering, persistent tracking and object-size estimation are not integrated into the live receiver.</td></tr>
+        <tr><td>Object processing</td><td>Not implemented in the live visualizer.</td><td>No DBSCAN, persistent tracking, or object-size and distance estimation is currently integrated.</td></tr>
       </tbody>
     </table>
+    <h4>Vendor SDK field benchmark</h4>
+    <p>The vendor SDK was benchmarked outdoors outside E8 Lab at NUS on 12 November 2026.
+      The radar display and scene photograph provide qualitative context for the SDK point cloud.</p>
+    <p>The red and yellow boxes in both images are hand-drawn annotations.
+      They were not generated by the radar algorithm or vendor SDK.</p>
+    <div class="radar-progress-figures">
+      <figure class="architecture-figure">
+        <img src="./assets/ctlrr540-vendor-sdk-field-benchmark.png" alt="Vendor radar SDK field benchmark view with raw points and manually drawn red and yellow boxes" loading="lazy">
+        <figcaption>Figure 7. Vendor SDK field view with manual annotations.</figcaption>
+      </figure>
+      <figure class="architecture-figure">
+        <img src="./assets/ctlrr540-field-scene-manual-annotations.png" alt="Outdoor NUS scene outside E8 Lab with a radar unit in the foreground and manually drawn boxes around vehicles" loading="lazy">
+        <figcaption>Figure 8. Field scene outside E8 Lab; boxes are manual.</figcaption>
+      </figure>
+    </div>
+    <p>This benchmark documents the SDK display in an outdoor scene.
+      The annotations are for visual reference only and do not establish automated detection, object association or measured accuracy.</p>
+    <h4>Live visualizer and vendor SDK comparison</h4>
+    <p>The custom viewer displays decoded radar detections in XY, YZ and XZ projections and logs the reconstructed points.
+      The vendor SDK capture provides a point table and a 3D scene view.</p>
+    <div class="radar-progress-figures">
+      <figure class="architecture-figure">
+        <img src="./assets/ctlrr540-live-xy-provisional.png" alt="Custom CTLRR-540 live visualizer showing a provisional XY point projection for frame 18092, with 352 points accumulated over 250 milliseconds and valid status false" loading="lazy">
+        <figcaption>Figure 9. Custom live XY view; frame is provisional.</figcaption>
+      </figure>
+      <figure class="architecture-figure">
+        <img src="./assets/ctlrr540-vendor-sdk-view.png" alt="Vendor radar SDK showing a raw-points table, 3D scene and an empty tracking-points panel" loading="lazy">
+        <figcaption>Figure 10. Vendor SDK point visualizer as comparison.</figcaption>
+      </figure>
+      <figure class="architecture-figure">
+        <img src="./assets/ctlrr540-live-three-view-provisional.png" alt="Custom CTLRR-540 live visualizer showing XY, YZ and XZ projections for frame 8950, with 483 points accumulated over 250 milliseconds and valid status false" loading="lazy">
+        <figcaption>Figure 11. Custom live three-view display; frame is provisional.</figcaption>
+      </figure>
+    </div>
+    <table>
+      <thead><tr><th>Aspect</th><th>Custom live visualizer</th><th>Vendor SDK capture</th></tr></thead>
+      <tbody>
+        <tr><td>Point display</td><td>Decoded points shown in XY, YZ and XZ projections with 250 ms accumulation.</td><td>Raw-point table and 3D scene view are visible.</td></tr>
+        <tr><td>Logging and frame status</td><td>Decoded XYZ points are logged; the two shown frames are marked <code>valid=False</code> and remain provisional.</td><td>The screenshot does not show a matching frame ID or synchronized capture for direct comparison.</td></tr>
+        <tr><td>Object-level processing</td><td>No DBSCAN, tracking or object-size/distance estimates are implemented in the live visualizer.</td><td>The tracking-points pane is empty in the supplied capture; it does not demonstrate tracking output.</td></tr>
+      </tbody>
+    </table>
+    <p>These screenshots demonstrate live decoding and visualization progress, not detection accuracy or equivalence with the vendor SDK.
+      The captures are not a synchronized, same-frame comparison, and both custom-viewer frames are flagged provisional because frame-ID validation remains unresolved.</p>
     <p>The current performance progress is therefore successful acquisition and visualization of vendor detection points, with frame-identity validation still open.
       Vendor point records are post-DSP detections, not raw ADC/IQ samples.</p>
     <p>The viewer and CSV do not by themselves establish detection accuracy, physical object size or distance accuracy.
@@ -726,27 +767,21 @@
       Report each stage and host pipeline delay from packet receipt to display (median, 95th percentile, maximum), along with frame cadence, backlog and packet loss for one and two radars.
       Call this sensor-to-screen latency only if vendor timestamp semantics and clock synchronization are verified; otherwise sensor-internal processing time is unknown.
       The 50 ms vendor frame interval describes nominal output cadence, not latency or a proven safety budget.</p>
-    <h3 id="actions">6.2 Corrective Actions and Contingencies</h3>
-    <p>The test plan depends on progress on technical validation and vessel access for sea trial</p>
-    <ul>
-      <li><strong>Full interface or decoder delay:</strong> preserve the completed bring-up result as limited initial evidence; request vendor packet/configuration support and use replay only as software evidence. Limit performance claims to tests actually completed.</li>
-      <li><strong>Time synchronization:</strong> record monotonic host timestamps at packet receipt and video timestamps; measure offset/drift before using camera as ground truth.</li>
-      <li><strong>Water repeatability:</strong> quantify volume and application duration, fix target/range, randomize order and repeat each condition; call this spray/wetting, not wave simulation.</li>
-      <li><strong>Vessel access:</strong> prioritize a controlled bench/range matrix; treat Sea Joey trials as conditional on permission and schedule, with the small USV geometry retained for placement analysis.</li>
-      <li><strong>Size/threshold uncertainty:</strong> agree target classes and warning logic with ST Engineering before final evaluation; report cluster extent and provisional thresholds separately from physical size and safe operating distances.</li>
-    </ul>
-    <h3 id="completion-criteria">6.3 Evidence and Completion Criteria</h3>
-    <p>The contingency plan manages project risks.
-      This subsection states the evidence the final report must contain to support its claims.</p>
-    <p>The project should close with evidence for the following outputs, not only a working visualization.</p>
-    <ul>
-      <li><strong>Verified sensor interface:</strong> a repeatable packet logger and decoder with confirmed units, coordinate conventions, message types, update cadence and known timestamp limitations.</li>
-      <li><strong>Vessel configuration case:</strong> at least one partner-reviewed vessel plan with mounting constraints, chosen monitoring zone, candidate layouts, sensor count and poses, geometric coverage map, and field-measured coverage comparison. If mounting information is unavailable, label the result as a parametric method demonstration rather than a vessel installation recommendation.</li>
-      <li><strong>Detection characterization:</strong> reproducible results by target, range, aspect and exposure, with target dimensions and materials recorded, misses retained, and cluster extent distinguished from physical size.</li>
-      <li><strong>System timing:</strong> logged packet-to-display processing distributions, cadence, backlog and packet loss for available single- and dual-radar configurations; unknown sensor-internal delay stated clearly.</li>
-      <li><strong>Fusion evidence:</strong> synchronized camera dataset and association results only if calibration and timing gates pass. Otherwise, use video for qualitative labels and explicitly defer automated fusion.</li>
-      <li><strong>Reproducibility:</strong> preserve configuration files, radar logs, target survey, test conditions, processing parameters and exclusions so another operator can repeat the analysis.</li>
-    </ul>
+    <h3 id="actions">6.2 Risk Controls and Completion Evidence</h3>
+    <p>Section 6.1 defines the planned tests.
+      This section pairs likely constraints with fallback actions and the evidence needed to support the final claims.</p>
+    <table>
+      <thead><tr><th>Risk or dependency</th><th>Action if constrained</th><th>Evidence to report</th></tr></thead>
+      <tbody>
+        <tr><td>Decoder, packet access or vendor support is delayed</td><td>Preserve the completed bring-up as preliminary evidence; request packet and configuration details from RUDA. Use replay to test software, not as live-sensor validation.</td><td>Repeatable packet log and decoder; confirmed message types, units, coordinate convention and cadence. Disclose unresolved fields and limit performance claims accordingly.</td></tr>
+        <tr><td>Camera and radar timing is uncertain</td><td>Record monotonic host packet timestamps and video timestamps; measure offset and drift before using camera data for quantitative association.</td><td>Report synchronization quality. Include fusion results only if calibration and timing checks pass; otherwise use video as qualitative context and defer automated fusion.</td></tr>
+        <tr><td>Water exposure or spray is not repeatable</td><td>Fix target and range, measure water volume or flow and duration, repeat conditions, and randomize their order where practical. Describe the test as spray or wetting, not wave simulation.</td><td>Document exposure and dry baselines; report detection availability, errors, track continuity and unmatched returns. Do not claim RF attenuation without calibrated signal or raw-data evidence.</td></tr>
+        <tr><td>Vessel or sea-trial access is unavailable</td><td>Prioritize controlled bench and range tests; keep Sea Joey trials conditional on access. Use the smaller USV only if its geometry and mounting data are available.</td><td>Provide a partner-reviewed vessel layout with mounting constraints, monitored zone, sensor count and poses, coverage map and field comparison. Without vessel data, label the result a parametric method demonstration.</td></tr>
+        <tr><td>Target size or warning thresholds remain undefined</td><td>Agree target classes and warning logic with ST Engineering before final evaluation. Keep cluster extent separate from physical dimensions and safe operating limits.</td><td>Report repeatable detection results by measured target, range, aspect and exposure; retain misses and state the smallest target that met the agreed criterion.</td></tr>
+        <tr><td>Dual-radar integration or latency testing is incomplete</td><td>Report the validated single-radar baseline and identify dual-radar work as incomplete.</td><td>For available configurations, report packet-to-display latency distributions, cadence, backlog and packet loss. State that sensor-internal delay is unknown unless independently verified.</td></tr>
+        <tr><td>Reproduction of results</td><td>Keep test settings and exclusions with each run.</td><td>Archive configuration files, radar logs, target survey, conditions, processing parameters and exclusions so the analysis can be repeated.</td></tr>
+      </tbody>
+    </table>
   </div>
 
   <sl-divider></sl-divider>
