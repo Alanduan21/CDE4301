@@ -260,7 +260,6 @@
     <p>The requirements state what the design should do.
       These measures define how detection, size estimates and distance estimates will be compared with ground truth.</p>
     <ul>
-      <li><strong>Detection accuracy:</strong> compare radar detections with ground-truth target observations and report precision and recall by target, range, angle and test condition.</li>
       <li><strong>Object-size estimation accuracy:</strong> compare estimated object dimensions with measured physical dimensions. Report mean absolute error; treat this metric as unavailable when the radar pipeline does not produce a size estimate.</li>
       <li><strong>Distance estimation accuracy:</strong> compare radar-estimated target distance with surveyed ground truth. Report mean absolute error and signed bias by range and condition.</li>
     </ul>
@@ -292,24 +291,34 @@
 
   <div id="selected-radar">
     <h3>3.1 Selected Radar: CTLRR-540 4D Imaging Radar</h3>
-    <p>The trade study identifies automotive 4D radar as the candidate technology.
-      This subsection records the chosen model’s documented capabilities and the details that still need verification.</p>
-    <p>RUDA's CTLRR-540 (6T8R) manual lists 76–79 GHz, 0.2–360 m range, 0.15 m range resolution, ±0.1 m range accuracy, up to 2048 points/frame, 20 Hz output, ±60° azimuth, ±15° pitch, 12 V, ≤10 W, 100 Mbps Ethernet/CAN and IP6K7/IP6K9K protection <a href="#ref-5">[5]</a>.
-      These are vendor ratings.
-      The listed maximum range and resolution do not establish detection of small obstacles at 0–10 m in marine conditions.
-    </p>
-    <p>The manual specifies differential Ethernet pins ETH_M/ETH_P.
-      Project vendor guidance says full 4D point data are available over Ethernet; message availability, axes, units, timestamps and PHY compatibility still require live-packet verification.
-      A media converter and Jetson AGX Xavier are planned host equipment.</p>
-    <p>RUDA's manual identifies an AWR2243P RF front-end and AM2732 processor in the CTLRR-540; this is RUDA's packaged radar, not a TI evaluation board.
-      TI describes AWR2243 as a 76–81 GHz FMCW transceiver and AM2732 as a radar processor platform <a href="#ref-6">[6]</a><a href="#ref-7">[7]</a>.
-      TI's AWR2243BOOST is a separate evaluation module <a href="#ref-8">[8]</a>; the RUDA manual does not state that this board is included in the CTLRR-540.
-      TI documents describe a single AWR2243 as 3-transmit/4-receive, while the RUDA manual describes CTLRR-540 as 6T8R.
-      The available documents do not establish the exact RF cascade topology, board layout, or which raw samples and calibration signals RUDA exposes.
-      Confirm these details, firmware access and timestamp fields with RUDA before treating the product as a TI development platform.</p>
-    <p>The verified project interface is the packaged radar's point/track stream over Ethernet or CAN, subject to packet verification.
-      Processed detections do not guarantee access to raw ADC/IQ or calibrated received power.
-      Confirm available signal fields before calling water testing an RF attenuation study.</p>
+    <p>The trade study selects the RUDA CTLRR-540 as the radar candidate for prototype characterization.
+      The table separates manufacturer specifications from performance still to be demonstrated.</p>
+    <table>
+      <thead><tr><th>Parameter</th><th>CTLRR-540 documentation</th><th>Project implication</th></tr></thead>
+      <tbody>
+        <tr><td>Radar configuration</td><td>6 transmit, 8 receive channels (6T8R) <a href="#ref-5">[5]</a></td><td>Vendor configuration; internal antenna and RF cascade layout are not documented in the supplied manual.</td></tr>
+        <tr><td>Operating band</td><td>76–79 GHz <a href="#ref-5">[5]</a></td><td>Supports the selected 77 GHz mmWave investigation.</td></tr>
+        <tr><td>Range</td><td>Listed as 0.2–360 m <a href="#ref-5">[5]</a></td><td>Maximum range does not prove reliable detection of small targets at close berthing distances.</td></tr>
+        <tr><td>Range performance</td><td>0.15 m resolution; ±0.1 m accuracy <a href="#ref-5">[5]</a></td><td>Manufacturer ratings; verify against surveyed targets and test conditions.</td></tr>
+        <tr><td>Angular coverage</td><td>±60° azimuth; ±15° pitch <a href="#ref-5">[5]</a></td><td>Use as nominal coverage inputs; measure installed coverage and blind regions.</td></tr>
+        <tr><td>Output</td><td>Up to 2,048 points/frame at 20 Hz <a href="#ref-5">[5]</a></td><td>Live acquisition currently decodes vendor detection points; point count and cadence remain test conditions to characterize.</td></tr>
+        <tr><td>Power and enclosure</td><td>12 V, ≤10 W; IP6K7/IP6K9K <a href="#ref-5">[5]</a></td><td>Check power and mounting requirements; enclosure rating alone does not establish performance through spray or sea clutter.</td></tr>
+        <tr><td>Host interfaces</td><td>100 Mbps Ethernet and CAN; differential Ethernet pins ETH_M/ETH_P <a href="#ref-5">[5]</a></td><td>Current receiver uses Ethernet; confirm PHY compatibility, packet fields, units, axes and timestamps.</td></tr>
+      </tbody>
+    </table>
+    <h4>Processing hardware and data access</h4>
+    <ul>
+      <li>The RUDA manual identifies an AWR2243P RF front end and AM2732 processor in the packaged CTLRR-540 <a href="#ref-5">[5]</a>.</li>
+      <li>TI lists AWR2243 as a 76–81 GHz FMCW transceiver and AM2732 as a radar processor platform <a href="#ref-6">[6]</a><a href="#ref-7">[7]</a>.</li>
+      <li>AWR2243BOOST is a separate TI evaluation module <a href="#ref-8">[8]</a>; the RUDA manual does not say that it is included in the CTLRR-540.</li>
+      <li>The available documentation does not establish the radar’s internal RF cascade, raw ADC/IQ access or calibrated received-power output.</li>
+    </ul>
+    <p>The project chose the CTLRR-540 because it is a sourced, packaged 4D radar that has already been brought up and provides vendor detection points over Ethernet for the planned vessel-configuration study.
+      Its stated field of view, range and environmental ratings make it a practical candidate to test, while its 12 V, ≤10 W rating supports prototype power planning.</p>
+    <p>This is a feasibility choice, not evidence that the radar is optimal or suitable for every marine condition.
+      The project will judge suitability from measured close-range detection, distance and size-estimation results.</p>
+    <p>Because the current stream contains processed detections rather than confirmed raw ADC/IQ or calibrated received power, water tests can assess detection changes but cannot yet be called an RF attenuation study.
+      Confirm accessible signal fields, firmware controls and timestamp behavior with RUDA before making that claim.</p>
   </div>
 
   <sl-divider></sl-divider>
@@ -358,7 +367,7 @@
         <path d="M204 403 V420" fill="none" stroke="#b98236" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#sysArrow)"/>
         <path d="M555 403 V420" fill="none" stroke="#b98236" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#sysArrow)"/>
       </svg>
-      <figcaption>Figure 1. Current and planned system architecture. Solid components show the implemented single-radar diagnostic path; dashed components show the proposed multi-radar and integrated perception system. The current viewer is a three-view diagnostic plot, not the synthetic vessel-centric UI shown in Figure 3.</figcaption>
+      <figcaption>Figure 1. Current and planned system architecture.</figcaption>
     </figure>
   </div>
 
@@ -375,8 +384,8 @@
       Warning zones remain configurable research logic, not operational safety thresholds.</p>
     <figure class="architecture-figure">
       <svg viewBox="0 0 760 610" role="img" aria-labelledby="swTitle swDesc" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block">
-        <title id="swTitle">Live radar detection decoding and offline analysis architecture</title>
-        <desc id="swDesc">A live UDP receiver reconstructs radar frames, decodes vendor detection points and converts range and angles into XYZ coordinates. Live output feeds a three-view viewer and CSV logger. The separate offline DBSCAN script reads logged points to estimate clusters and observed spatial extent. Unified object visualization remains planned.</desc>
+        <title id="swTitle">Live radar detection decoding architecture</title>
+        <desc id="swDesc">A live UDP receiver reconstructs radar frames, decodes vendor detection points and converts range and angles into XYZ coordinates. Live output feeds a three-view viewer and CSV logger. The separate DBSCAN script reads logged points to estimate clusters and observed spatial extent. Unified object visualization remains planned.</desc>
         <defs><marker id="swArrow" markerWidth="8" height="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#526579"/></marker><marker id="swPlanArrow" markerWidth="8" height="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#b98236"/></marker></defs>
         <rect x="180" y="12" width="400" height="54" rx="9" fill="#eaf0f7" stroke="#8da1b8"/>
         <text x="380" y="33" text-anchor="middle" font-size="14" font-weight="700" fill="#203247">UDP Multicast Receiver</text>
@@ -402,19 +411,19 @@
         <text x="570" y="335" text-anchor="middle" font-size="11" fill="#40566d">Provisional frames retained with validity=0</text>
         <path d="M570 347 V371" fill="none" stroke="#b98236" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#swPlanArrow)"/>
         <rect x="405" y="373" width="330" height="68" rx="9" fill="#fff2df" stroke="#d6a45f" stroke-dasharray="5 3"/>
-        <text x="570" y="395" text-anchor="middle" font-size="14" font-weight="700" fill="#754710">Offline Frame-Wise DBSCAN</text>
+        <text x="570" y="395" text-anchor="middle" font-size="14" font-weight="700" fill="#754710">Frame-Wise DBSCAN</text>
         <text x="570" y="413" text-anchor="middle" font-size="11" fill="#754710">Reads logged points · clusters each frame separately</text>
         <text x="570" y="430" text-anchor="middle" font-size="11" fill="#754710">Separate analysis script; not live-integrated</text>
         <path d="M570 441 V464" fill="none" stroke="#b98236" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#swPlanArrow)"/>
         <rect x="405" y="466" width="330" height="57" rx="9" fill="#fff2df" stroke="#d6a45f" stroke-dasharray="5 3"/>
-        <text x="570" y="488" text-anchor="middle" font-size="13" font-weight="700" fill="#754710">Offline Cluster Summaries</text>
+        <text x="570" y="488" text-anchor="middle" font-size="13" font-weight="700" fill="#754710">Cluster Summaries</text>
         <text x="570" y="507" text-anchor="middle" font-size="11" fill="#754710">Centroid · distance · observed point extent</text>
         <path d="M190 347 V548 H270 M570 523 V548 H490" fill="none" stroke="#b98236" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#swPlanArrow)"/>
         <rect x="205" y="550" width="350" height="45" rx="9" fill="#fff2df" stroke="#d6a45f" stroke-dasharray="5 3"/>
         <text x="380" y="568" text-anchor="middle" font-size="13" font-weight="700" fill="#754710">Future Integrated Vessel-Centric UI</text>
         <text x="380" y="585" text-anchor="middle" font-size="10" fill="#754710">Planned: connect live points, clusters, calibration and operator display</text>
       </svg>
-      <figcaption>Figure 2. Software architecture for the implemented live point viewer and CSV logger, plus the separate offline DBSCAN analysis and planned unified interface. The visualizer processes vendor detection points rather than raw ADC/IQ data. Frames with unresolved header/tail ID mismatches are provisional.</figcaption>
+      <figcaption>Figure 2. Software architecture for the implemented live point viewer and CSV logger with DBSCAN analysis and planned unified interface.</figcaption>
     </figure>
   </div>
 
@@ -436,10 +445,10 @@
       <li><strong>Select sensor count and placement.</strong> First test whether one sensor covers all must-cover cells. If not, evaluate two-sensor combinations and report each layout's uncovered priority area, single-sensor redundancy, overlap area and mounting feasibility. The project can compare candidate layouts; a final layout requires partner-approved coverage and mounting requirements.</li>
       <li><strong>Validate in the field.</strong> Move a surveyed target through selected grid cells, including predicted boundaries and overlap regions. Compare observed detection availability and localization error with the geometric prediction, then update the coverage map.</li>
     </ol>
-    <p><strong>Proposed coverage measures:</strong> for required grid cell <em>j</em>, assign task weight <em>w</em><sub>j</sub> and estimate each sensor's detection rate <em>p</em><sub>ij</sub> from repeated passes.
+    <!-- <p><strong>Proposed coverage measures:</strong> for required grid cell <em>j</em>, assign task weight <em>w</em><sub>j</sub> and estimate each sensor's detection rate <em>p</em><sub>ij</sub> from repeated passes.
       A cell counts as covered when at least one selected sensor meets the agreed repeatability threshold <em>p</em><sub>req</sub>.
       Weighted coverage is the covered priority weight divided by total priority weight; blind-zone and overlap scores are calculated from cells meeting the threshold for zero or at least two sensors, respectively.
-      The numerical threshold and priority weights must be agreed with ST Engineering before layout selection.</p>
+      The numerical threshold and priority weights must be agreed with ST Engineering before layout selection.</p> -->
     <p><strong>Layout decision:</strong> enumerate physically feasible one-radar poses first, then feasible two-radar combinations if one unit cannot meet the must-cover constraint.
       Select the smallest sensor count that meets the agreed weighted-coverage requirement; among layouts with that count, compare blind-zone weight, overlap, installation burden and network/processing limits.
       If no layout meets the requirement within the two-radar limit, report the shortfall and identify which zone would remain uncovered rather than recommending an infeasible arrangement.</p>
@@ -472,19 +481,102 @@
     <h3>4.3 Communications Architecture</h3>
     <p>The processing and placement sections define what data the system uses.
       This subsection describes the implemented single-radar UDP receiver and the network work remaining for the full system.</p>
-    <p>The live Python receiver listens for UDP multicast on the selected network interface; its defaults are group 224.0.2.6 and port 51277.
-      Radar Ethernet reaches the Windows development PC through the compatible automotive-Ethernet interface.</p>
-    <p>The Ethernet-switch path for two radars and deployment to the Jetson AGX Xavier remain planned.
-      Verify packet loss, stream selection, unique source identities, frame timestamps and simultaneous two-radar operation before claiming multi-sensor integration.</p>
+    <p>The live Python receiver subscribes to UDP multicast group 224.0.2.6 on destination port 51277.
+      It binds the UDP socket to 0.0.0.0:51277, then joins the multicast group through the selected host network interface.</p>
+    <p>The wildcard bind accepts traffic addressed to the host on that port; it does not select the network adapter.
+      The selected interface determines which network receives the multicast subscription.</p>
+    <p>Single-radar reception has been demonstrated on the Windows development PC through the compatible automotive-Ethernet interface.
+      A shared-switch, two-radar path and Jetson deployment remain proposed and require validation.</p>
+    <figure class="architecture-figure">
+      <svg viewBox="0 0 760 435" role="img" aria-labelledby="netTitle netDesc" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block">
+        <title id="netTitle">Radar Ethernet and UDP multicast communication architecture</title>
+        <desc id="netDesc">The verified single-radar path passes through a 100BASE-T1 media converter to a host Ethernet interface and UDP multicast receiver. A second radar and shared-switch topology are proposed.</desc>
+        <defs>
+          <marker id="netArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#526579"/></marker>
+        </defs>
+        <rect x="35" y="18" width="300" height="62" rx="9" fill="#eaf0f7" stroke="#8da1b8"/>
+        <text x="185" y="43" text-anchor="middle" font-size="14" font-weight="700" fill="#203247">CTLRR-540 Radar 1</text>
+        <text x="185" y="62" text-anchor="middle" font-size="11" fill="#40566d">Single-radar reception demonstrated</text>
+        <rect x="425" y="18" width="300" height="62" rx="9" fill="#fff2df" stroke="#d6a45f" stroke-dasharray="5 3"/>
+        <text x="575" y="43" text-anchor="middle" font-size="14" font-weight="700" fill="#754710">CTLRR-540 Radar 2</text>
+        <text x="575" y="62" text-anchor="middle" font-size="11" fill="#754710">Second sensor proposed</text>
+        <path d="M185 80 V116" fill="none" stroke="#526579" stroke-width="1.8" marker-end="url(#netArrow)"/>
+        <path d="M575 80 V96 H650 V116" fill="none" stroke="#b27a2e" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#netArrow)"/>
+        <rect x="35" y="118" width="300" height="60" rx="9" fill="#e4f5ef" stroke="#72ad9b"/>
+        <text x="185" y="143" text-anchor="middle" font-size="13" font-weight="700" fill="#174e42">100BASE-T1 Media Converter</text>
+        <text x="185" y="162" text-anchor="middle" font-size="11" fill="#285e52">Radar 1 link · demonstrated</text>
+        <rect x="425" y="118" width="300" height="60" rx="9" fill="#fff2df" stroke="#d6a45f" stroke-dasharray="5 3"/>
+        <text x="575" y="143" text-anchor="middle" font-size="13" font-weight="700" fill="#754710">Media Converter 2</text>
+        <text x="575" y="162" text-anchor="middle" font-size="11" fill="#754710">Second link · proposed</text>
+        <path d="M575 178 V202 H510 V226" fill="none" stroke="#b27a2e" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#netArrow)"/>
+        <rect x="205" y="228" width="350" height="56" rx="9" fill="#fff2df" stroke="#d6a45f" stroke-dasharray="5 3"/>
+        <text x="380" y="251" text-anchor="middle" font-size="14" font-weight="700" fill="#754710">Shared Ethernet Switch</text>
+        <text x="380" y="270" text-anchor="middle" font-size="11" fill="#754710">Proposed multi-radar aggregation</text>
+        <path d="M380 284 V310" fill="none" stroke="#b27a2e" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#netArrow)"/>
+        <path d="M185 178 V205 H145 V339 H160" fill="none" stroke="#526579" stroke-width="1.8" marker-end="url(#netArrow)"/>
+        <rect x="160" y="312" width="440" height="55" rx="9" fill="#eaf0f7" stroke="#8da1b8"/>
+        <text x="380" y="335" text-anchor="middle" font-size="14" font-weight="700" fill="#203247">Host Ethernet Interface</text>
+        <text x="380" y="354" text-anchor="middle" font-size="11" fill="#40566d">Windows development PC · Jetson interface TBD</text>
+        <path d="M380 367 V389" fill="none" stroke="#526579" stroke-width="1.8" marker-end="url(#netArrow)"/>
+        <rect x="100" y="391" width="560" height="42" rx="9" fill="#e4f5ef" stroke="#72ad9b"/>
+        <text x="380" y="409" text-anchor="middle" font-size="12" font-weight="700" fill="#174e42">UDP multicast: 224.0.2.6 · port 51277 · bind 0.0.0.0:51277</text>
+        <text x="380" y="425" text-anchor="middle" font-size="10" fill="#285e52">Join group on selected NIC · identify sender from source IP</text>
+      </svg>
+      <figcaption>Figure 3. Radar communications and multicast architecture.</figcaption>
+    </figure>
   </div>
 
   <div id="power">
-    <h3>4.4 Power Architecture and Near-Term Test Setup</h3>
+    <h3>4.4 Power Architecture</h3>
     <p>The communications design requires a compatible powered sensor and host.
       This subsection records the bench power and wet-test constraints before any vessel installation is attempted.</p>
-    <p>Bench testing requires a correctly rated 12 V supply for each radar, compatible converter and Jetson supplies, and safe separation of power equipment from the wet-test area.
-      Exact converter, LiDAR and Jetson carrier-board requirements must be checked against the supplied hardware.
-      A custom vessel power-distribution PCB is a possible later integration item, not a Semester 1 achievement.</p>
+    <p>The proposed bench arrangement uses a portable AC source with separate regulated supplies for the radar, communications hardware and compute platform.
+      Each radar supply must meet the CTLRR-540 input requirements, while converter, switch and Jetson supplies must match their specific hardware.</p>
+    <p>The diagram is a planning architecture, not a verified assembled power system.
+      Confirm the proposed supply ratings, adapter outputs, protection, wiring and connector limits before implementation.</p>
+    <p>Keep power equipment separated from the wet-test area.
+      A custom vessel power-distribution PCB remains a possible later integration item.</p>
+    <figure class="architecture-figure">
+      <svg viewBox="0 0 760 430" role="img" aria-labelledby="powerTitle powerDesc" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block">
+        <title id="powerTitle">Proposed prototype power architecture</title>
+        <desc id="powerDesc">A portable AC source concept feeds separate regulated supplies for radar, communications and Jetson loads. Ratings and protection remain to be confirmed.</desc>
+        <defs><marker id="powerArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#8a6b3c"/></marker></defs>
+        <rect x="225" y="14" width="310" height="58" rx="9" fill="#fff2df" stroke="#d6a45f" stroke-dasharray="5 3"/>
+        <text x="380" y="38" text-anchor="middle" font-size="15" font-weight="700" fill="#754710">Portable AC Power Source</text>
+        <text x="380" y="57" text-anchor="middle" font-size="11" fill="#754710">EcoFlow concept · model and capacity to confirm</text>
+        <path d="M380 72 V99 H126 V122 M380 99 V122 M380 99 H634 V122" fill="none" stroke="#8a6b3c" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#powerArrow)"/>
+        <rect x="20" y="124" width="212" height="75" rx="9" fill="#eaf0f7" stroke="#8da1b8" stroke-dasharray="5 3"/>
+        <text x="126" y="148" text-anchor="middle" font-size="13" font-weight="700" fill="#203247">Radar Power Supply</text>
+        <text x="126" y="168" text-anchor="middle" font-size="11" fill="#40566d">Regulated 12 V · rating to verify</text>
+        <text x="126" y="185" text-anchor="middle" font-size="10" fill="#40566d">Proposed ≥30 W capacity</text>
+        <rect x="274" y="124" width="212" height="75" rx="9" fill="#eaf0f7" stroke="#8da1b8" stroke-dasharray="5 3"/>
+        <text x="380" y="148" text-anchor="middle" font-size="13" font-weight="700" fill="#203247">Communications Supplies</text>
+        <text x="380" y="168" text-anchor="middle" font-size="11" fill="#40566d">Converter and switch adapters</text>
+        <text x="380" y="185" text-anchor="middle" font-size="10" fill="#40566d">Voltage and current TBD</text>
+        <rect x="528" y="124" width="212" height="75" rx="9" fill="#fff2df" stroke="#d6a45f" stroke-dasharray="5 3"/>
+        <text x="634" y="148" text-anchor="middle" font-size="13" font-weight="700" fill="#754710">Jetson Power Adapter</text>
+        <text x="634" y="168" text-anchor="middle" font-size="11" fill="#754710">Carrier-board dependent</text>
+        <text x="634" y="185" text-anchor="middle" font-size="10" fill="#754710">Input requirements TBD</text>
+        <path d="M126 199 V226 H110 V247 M126 226 H250 V247 M380 199 V247 M634 199 V247" fill="none" stroke="#8a6b3c" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#powerArrow)"/>
+        <rect x="25" y="249" width="170" height="67" rx="8" fill="#e4f5ef" stroke="#72ad9b"/>
+        <text x="110" y="273" text-anchor="middle" font-size="12" font-weight="700" fill="#174e42">Radar 1</text>
+        <text x="110" y="293" text-anchor="middle" font-size="11" fill="#285e52">12 V · bring-up completed</text>
+        <rect x="210" y="249" width="170" height="67" rx="8" fill="#fff2df" stroke="#d6a45f" stroke-dasharray="5 3"/>
+        <text x="295" y="273" text-anchor="middle" font-size="12" font-weight="700" fill="#754710">Radar 2</text>
+        <text x="295" y="293" text-anchor="middle" font-size="11" fill="#754710">Planned · 12 V branch</text>
+        <rect x="395" y="249" width="170" height="67" rx="8" fill="#eaf0f7" stroke="#8da1b8" stroke-dasharray="5 3"/>
+        <text x="480" y="273" text-anchor="middle" font-size="12" font-weight="700" fill="#203247">Converters + Switch</text>
+        <text x="480" y="293" text-anchor="middle" font-size="11" fill="#40566d">Supply ratings TBD</text>
+        <rect x="580" y="249" width="160" height="67" rx="8" fill="#fff2df" stroke="#d6a45f" stroke-dasharray="5 3"/>
+        <text x="660" y="273" text-anchor="middle" font-size="12" font-weight="700" fill="#754710">Jetson AGX Xavier</text>
+        <text x="660" y="293" text-anchor="middle" font-size="11" fill="#754710">Carrier input TBD</text>
+        <rect x="80" y="348" width="600" height="61" rx="9" fill="#f6f9fc" stroke="#c6d2df"/>
+        <text x="380" y="372" text-anchor="middle" font-size="12" font-weight="700" fill="#203247">Power budget and protection: pending validation</text>
+        <text x="380" y="392" text-anchor="middle" font-size="11" fill="#40566d">Confirm load, fuse, wire, connector, adapter efficiency and required runtime</text>
+        <text x="380" y="426" text-anchor="middle" font-size="10" fill="#64748b">Dashed paths indicate proposed or unconfirmed power distribution</text>
+      </svg>
+      <figcaption>Figure 4. Proposed prototype power architecture.</figcaption>
+    </figure>
   </div>
 
   <div id="ui">
@@ -497,7 +589,7 @@
       User-interface feasibility is demonstrated; sensing and warning performance are not.</p>
   <figure class="architecture-figure">
     <iframe src="./simulations/maritime_proximity_ui_3d_v07.html" title="Conceptual maritime proximity interface simulation" width="100%" height="700" style="border:1px solid #d7e0e8;border-radius:12px" loading="lazy" allowfullscreen></iframe>
-    <figcaption>Figure 3. Concept interface showing vessel layout, sensor coverage and proximity zones; all displayed data are synthetic.</figcaption>
+    <figcaption>Figure 5. Synthetic vessel-centric interface concept.</figcaption>
   </figure>
   </div>
 
@@ -539,10 +631,10 @@
     </tbody></table>
     <figure class="architecture-figure">
       <image-component tag="comparative_dev" source="assets/comparative_experiment_setup_labelled.png" subtitle="Pilot setup: LiDAR, camera, tripod and cardboard target"></image-component>
-      <figcaption>Figure 4. LiDAR and camera pilot arrangement with the cardboard target; the photograph shows relative placement, not surveyed distances.</figcaption>
+      <figcaption>Figure 6. LiDAR and camera pilot setup.</figcaption>
     </figure>
     <h3 id="experiment-videos">5.1.2 Experiment Videos</h3>
-    <p>The pilot table and Figure 4 summarize the setup.
+    <p>The pilot table and Figure 6 summarize the setup.
       These videos provide the corresponding visual record for the six recorded runs.</p>
     <div class="experiment-videos">
       <video-component tag="lidar-baseline" source="https://www.youtube.com/embed/3joBU_QBYWQ" subtitle="LiDAR — dry baseline (run 1)"></video-component>
@@ -587,11 +679,11 @@
     <table>
       <thead><tr><th>Function</th><th>Current implementation</th><th>Evidence and limitation</th></tr></thead>
       <tbody>
-        <tr><td>Live acquisition</td><td>Python receiver listens for UDP multicast on the configured interface and port.</td><td>One-radar data are received; two-radar acquisition and integrated vessel processing remain future work.</td></tr>
+        <tr><td>Live acquisition</td><td>Python receiver binds UDP port 51277 and joins group 224.0.2.6 through the configured network interface.</td><td>One-radar data are received; two-radar acquisition and integrated vessel processing remain future work.</td></tr>
         <tr><td>Frame assembly</td><td>Processes 0x10 frame headers, 0x11 point packets and 0x1F frame tails; checks declared point and packet counts.</td><td>Some frames have matching counts but mismatched header/tail frame IDs. They are flagged provisional (frame_valid=0); tail-ID semantics require vendor confirmation.</td></tr>
         <tr><td>Point decoding and coordinates</td><td>Reads 72-byte records and reconstructs XYZ from range, azimuth and elevation, interpreting angles as radians.</td><td>Coordinate axes and scale still require comparison with surveyed targets before reporting localization accuracy.</td></tr>
         <tr><td>Live visualization and logging</td><td>Displays XY, YZ and XZ views with 250 ms accumulation and writes decoded detections to CSV.</td><td>Provides diagnostic evidence of a live stream; it is not an object tracker or a vessel-centric warning display.</td></tr>
-        <tr><td>Object estimation</td><td>A separate frame-wise DBSCAN script can analyze exported point data offline.</td><td>Clustering, persistent tracking and object-size estimation are not integrated into the live receiver.</td></tr>
+        <tr><td>Object estimation</td><td>A separate frame-wise DBSCAN script can analyze exported point data live.</td><td>Clustering, persistent tracking and object-size estimation are not integrated into the live receiver.</td></tr>
       </tbody>
     </table>
     <p>The current performance progress is therefore successful acquisition and visualization of vendor detection points, with frame-identity validation still open.
@@ -635,8 +727,7 @@
       Call this sensor-to-screen latency only if vendor timestamp semantics and clock synchronization are verified; otherwise sensor-internal processing time is unknown.
       The 50 ms vendor frame interval describes nominal output cadence, not latency or a proven safety budget.</p>
     <h3 id="actions">6.2 Corrective Actions and Contingencies</h3>
-    <p>The test plan depends on hardware, synchronization and vessel access.
-      These actions show how the project will respond when one of those dependencies is delayed or unavailable.</p>
+    <p>The test plan depends on progress on technical validation and vessel access for sea trial</p>
     <ul>
       <li><strong>Full interface or decoder delay:</strong> preserve the completed bring-up result as limited initial evidence; request vendor packet/configuration support and use replay only as software evidence. Limit performance claims to tests actually completed.</li>
       <li><strong>Time synchronization:</strong> record monotonic host timestamps at packet receipt and video timestamps; measure offset/drift before using camera as ground truth.</li>
@@ -663,15 +754,23 @@
   <div id="timeline">
     <h2>7. Project Plan and Milestones</h2>
     <p>Section 6 defines the required evidence and dependencies.
-      This timeline sequences the work so that integration and vessel testing follow the necessary bring-up and calibration gates.</p>
-    <p>Completed: project framing, radar sourcing and bring-up with an initial result, 3D interface prototype and six LiDAR/camera pilot runs.
-      Remaining work depends on repeatable radar tests, full software integration and vessel constraints.</p>
+      This Semester 2 timeline sequences radar characterization, multi-radar integration, system validation and final documentation.</p>
+    <p>Semester 1 focused on project framing, radar sourcing and bring-up with an initial result, 3D interface prototype and six LiDAR/camera pilot runs.
+      Remaining work turns the focus to radar performance evaluation, full software integration and vessel constraints as listed below.</p>
     <ol class="project-timeline">
-      <li><strong>Nov–Dec 2026 — baseline and requirements:</strong> document the initial radar result and setup; obtain vessel drawings, mounting limits and priority zones from ST Engineering.</li>
-      <li><strong>Jan 2027 — single-radar performance:</strong> repeat the initial measurement, then complete range/angle tests and report detection, size-estimation and distance-estimation results.</li>
-      <li><strong>Feb 2027 — software:</strong> integrate clustering, tracking, configuration and UI; measure processing against the 50 ms frame interval.</li>
-      <li><strong>Mar 2027 — two radars:</strong> calibrate poses and measure overlap, blind sectors and coverage against the single-node baseline.</li>
-      <li><strong>Apr–May 2027 — validation/report:</strong> complete repeatable water and target trials, benchmark against synchronized references where available, and submit to the official schedule.</li>
+      <li><strong>Mid November–Mid December 2026 — multi-sensor architecture review:</strong>
+        Investigate the network setup and prepare the architecture for multi-sensor operation.</li>
+      <li><strong>Mid November–Late December 2026 — radar characterization and validation:</strong>
+        Quantify target detectability, angular and range separation, clutter and environmental performance.
+        Implement clustering using decoded radar data.
+        Decide by mid-December whether the current mmWave technology can meet the target requirements.</li>
+      <li><strong>Early January–Early February 2027 — multi-radar integration:</strong>
+        Connect two CTLRR-540 radars to the Jetson and synchronize detections in a common vessel frame.
+        Connect live radar detections to the operator interface, then evaluate mounting configurations and coverage overlap.</li>
+      <li><strong>Early February–Mid March 2027 — system validation and deployment guidelines:</strong>
+        Validate the integrated system and conduct a sea trial if access and conditions permit.</li>
+      <li><strong>End March–Mid April 2027 — documentation:</strong>
+        Complete the report and prepare the final presentation.</li>
     </ol>
 
   </div>
